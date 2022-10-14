@@ -12,7 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    //UserDetailsServiceImpl , which implements UserDetailsService has a @Service, so it will be autowired to here.
+    @Autowired
     private UserDetailsService userDetailsService;
+
 //UserDetailsService return a UserDetails. so our user class need to be inline with UserDetails in order to use UserDetailsService
 
     @Bean
@@ -25,20 +28,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
-//                .inMemoryAuthentication()
-//                .withUser("mandy")
-//                .password("$2a$10$TEMJNBHgr5LWpHbcR9R5WuYdJ7DfUU8ZV9MBnl98fa5wCWVkjlFX6")
-//                .roles("USER", "ADMIN");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                //csrf with any method that can make changes like post, put, delete, patch. This line can be replaced with inline csrf in the html file for that method.
+//                .csrf().disable()
                 //antMatchers("/admin/**") admin and any sub need the specific role
                 .authorizeRequests()
                     .antMatchers("/admin/**").hasAnyRole("ADMIN")
@@ -48,7 +47,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                           .loginPage("/login")
                           .defaultSuccessUrl("/dashboard")
                           .permitAll();
-
-
     }
 }
