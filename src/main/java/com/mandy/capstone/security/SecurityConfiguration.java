@@ -3,6 +3,8 @@ package com.mandy.capstone.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,15 +25,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//                .userDetailsService(userDetailsService)
+//                .passwordEncoder(passwordEncoder);
+//    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,17 +45,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/admin**/**").hasAnyRole("ADMIN")
                     .antMatchers("/staff**/**").hasAnyRole("STAFF","ADMIN")
-                     .antMatchers("/register").permitAll()
+                     .antMatchers("/register**").permitAll()
+                .antMatchers(HttpMethod.GET, "/css/**", "/javascript/**").permitAll()
                     .anyRequest().hasAnyRole("USER","ADMIN","STAFF")
                     .and()
                         .formLogin()
-                          .loginPage("/login")
-//                .successForwardUrl("/dashboard")
+                          .loginPage("/login")//
                           .defaultSuccessUrl("/dashboard", true)
                           .permitAll();
 //                //control how many people can log in at the same time. current set up to 1.
 //                .and()
 //                .sessionManagement()
 //                .maximumSessions(1);
+    }
+
+
+
+
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider());
     }
 }

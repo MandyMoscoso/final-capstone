@@ -4,3 +4,5 @@ values ('hello','$2a$10$.6zjVBXPT9qNWTLwLCDNTuz5MV.Yjvi2GjLhAEHc4.qSCqtAPDeCG');
 
 insert into authorities (authority, user_id)
 values ('ROLE_ADMIN', 2);
+
+postgres://degshpstlmpybq:3ee5270fba1375d2f7915feac8dafae51db006e7df35e79a3656d00330690816@ec2-18-208-55-135.compute-1.amazonaws.com:5432/dersejuimtu4f5
