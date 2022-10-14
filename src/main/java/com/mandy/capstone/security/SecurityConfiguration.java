@@ -46,7 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                         .formLogin()
                           .loginPage("/login")
-                          .defaultSuccessUrl("/dashboard")
+//                .successForwardUrl("/dashboard")
+                          .defaultSuccessUrl("/dashboard", true)
                           .permitAll();
 //                //control how many people can log in at the same time. current set up to 1.
 //                .and()
