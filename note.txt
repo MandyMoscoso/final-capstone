@@ -1,0 +1,6 @@
+insert into users (username, password)
+values ('hello','$2a$10$.6zjVBXPT9qNWTLwLCDNTuz5MV.Yjvi2GjLhAEHc4.qSCqtAPDeCG');
+
+
+insert into authorities (authority, user_id)
+values ('ROLE_ADMIN', 2);

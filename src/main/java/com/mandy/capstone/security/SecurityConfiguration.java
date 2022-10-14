@@ -40,12 +40,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .csrf().disable()
                 //antMatchers("/admin/**") admin and any sub need the specific role
                 .authorizeRequests()
-                    .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .anyRequest().hasAnyRole("USER")
+                    .antMatchers("/admin**/**").hasAnyRole("ADMIN")
+                    .antMatchers("/staff**/**").hasAnyRole("STAFF","ADMIN")
+                    .anyRequest().hasAnyRole("USER","ADMIN","STAFF")
                     .and()
                         .formLogin()
                           .loginPage("/login")
                           .defaultSuccessUrl("/dashboard")
                           .permitAll();
+//                //control how many people can log in at the same time. current set up to 1.
+//                .and()
+//                .sessionManagement()
+//                .maximumSessions(1);
     }
 }
