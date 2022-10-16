@@ -32,4 +32,10 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Authorities> authorities = new HashSet<>();
 
+    public User(User user) {
+        this.setAuthorities(user.getAuthorities());
+        this.setId(user.getId());
+        this.setPassword(((user.getPassword())));
+        this.setUsername(user.getUsername());
+    }
 }

@@ -29,4 +29,8 @@ public class Authorities implements GrantedAuthority {
     // in users table, it will be the opposite. we  haveSet<Authorities>, since the other side of the relationship is one to many - one user can have many authorities.
     private User user;
 
+    public Authorities(String role) {
+        this.authority = role;
+    }
+
 }
