@@ -33,7 +33,7 @@ public class LoginRegisterController {
     private UserService userService;
     @PostMapping("/register")
     public List<String> addUser(@RequestBody User newUser){
-//        System.out.println(newUser.getPassword());
+//        System.out.println(newUser);
 
         String passHash = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(passHash);

@@ -1,9 +1,14 @@
 const registerForm = document.getElementById('register-form')
-const registerUsername = document.getElementById('register-username')
-const registerPassword = document.getElementById('register-password')
-
+const registerUsername = document.getElementById('username')
+const registerPassword = document.getElementById('password')
+const registerFirstname = document.getElementById('firstname')
+const registerLastname = document.getElementById('lastname')
+const registerPhonenumber = document.getElementById('phonenumber')
+const csrfToken = document.getElementById("csrf")
 const headers = {
-'Content-Type': 'application/json'
+//'Content-Type': 'application/json',
+'Content-Type': 'application/json',
+"X-CSRF-Token": csrfToken.value
 }
 const baseUrl = 'http://localhost:8080'
 
@@ -12,7 +17,10 @@ const handleSubmit = async (e) => {
 
     let bodyObj = {
     username: registerUsername.value,
-    password: registerPassword.value
+    password: registerPassword.value,
+    firstname: registerFirstname.value,
+    lastname: registerLastname.value,
+    phonenumber: registerPhonenumber.value
     }
     console.log(bodyObj)
     const response = await fetch(`${baseUrl}/register`, {

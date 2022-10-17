@@ -1,0 +1,7 @@
+MVP:
+1. Role based log in with ADMIN, STAFF And USER roles.
+2. ADMIN can create ADMIN, STAFF and USER account.
+3. STAFF can create USER account.
+4. New user can create their own account through the company website.
+5. Users can edit their info after log in.
+6. Staffs and admin can see all user and edit their info.

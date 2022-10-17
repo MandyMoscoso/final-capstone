@@ -21,6 +21,10 @@ public class User {
 //    @Column
     private String password;
 
+    private String firstname;
+    private String lastname;
+    private String phonenumber;
+
     //Because we used @Data annotation. That annocation creates equals and hashcode implementations that include checking the content of the OneToMany collections. This interferes with Hibernate's loading strategy, or something like that. Adding @EqualsAndHashCode.Exclude and @ToString.Exclude will prevent that the OneToMany collections get accessed too early
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -37,5 +41,8 @@ public class User {
         this.setId(user.getId());
         this.setPassword(((user.getPassword())));
         this.setUsername(user.getUsername());
+        this.setFirstname(user.getFirstname());
+        this.setLastname(user.getLastname());
+        this.setPhonenumber(user.getPhonenumber());
     }
 }

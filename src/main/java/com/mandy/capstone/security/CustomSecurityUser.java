@@ -19,6 +19,9 @@ public class CustomSecurityUser extends User implements UserDetails {
         this.setId(user.getId());
         this.setPassword(((user.getPassword())));
         this.setUsername(user.getUsername());
+        this.setFirstname(user.getFirstname());
+        this.setLastname(user.getLastname());
+        this.setPhonenumber(user.getPhonenumber());
     }
     //noargs constructor. be here just to avoid bugs. that's how Java is.
     public CustomSecurityUser() {
