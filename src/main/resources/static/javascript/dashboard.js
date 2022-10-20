@@ -48,7 +48,6 @@ const  getUserInfo = async() =>{
     })
             .then(response => response.json())
              .then(data =>{
-                console.log(data)
                  populateUser(data)
               })
              .catch(err => console.error(err))
@@ -71,8 +70,8 @@ const populateUser = (obj) =>{
 }
 
 getUserInfo();
+
 const handleSubmit = async () => {
-    console.log("note submit clicked")
     let bodyObj = {
         id: 1,
         firstname: firstName.textContent,
@@ -81,13 +80,15 @@ const handleSubmit = async () => {
         username: email.textContent,
         phonenumber: phone.textContent,
         borrowerDto: {
-
         address: address.textContent,
         creditScore: creditScore.textContent,
         loanAmount: loanAmount.textContent,
         loanPurpose: loanPurpose.textContent,
         loanTerm: loanTerm.textContent,
         loanType: loanType.textContent,
+        occupancyType: occupancy.textContent,
+        propertyType: propertyType.textContent,
+        propertyValue: propertyValue.textContent,
         }
     }
     bodyObj = JSON.stringify(bodyObj)
@@ -98,5 +99,7 @@ const handleSubmit = async () => {
                   headers: headers
               })
                   .catch(err => console.error(err))
+    getUserInfo()
+
 }
 
