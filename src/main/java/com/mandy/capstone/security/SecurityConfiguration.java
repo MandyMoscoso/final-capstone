@@ -25,17 +25,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder);
-//    }
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -43,11 +32,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .csrf().disable()
                 //antMatchers("/admin/**") admin and any sub need the specific role
                 .authorizeRequests()
-                    .antMatchers("/admin**/**").hasAnyRole("ADMIN")
-                    .antMatchers("/staff**/**").hasAnyRole("STAFF","ADMIN")
+                //turn off for testing need to turnon when done
+//                    .antMatchers("/admin**/**").hasAnyRole("ADMIN")
+//                    .antMatchers("/staff**/**").hasAnyRole("STAFF","ADMIN")
                      .antMatchers("/register**").permitAll()
                 .antMatchers(HttpMethod.GET, "/css/**", "/javascript/**").permitAll()
-                    .anyRequest().hasAnyRole("USER","ADMIN","STAFF")
+                //turn off for testing. need to turn on when done
+//                    .anyRequest().hasAnyRole("USER","ADMIN","STAFF")
+                .anyRequest().permitAll()
                     .and()
                         .formLogin()
                           .loginPage("/login")//
@@ -58,18 +50,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .sessionManagement()
 //                .maximumSessions(1);
     }
-
-
-
-
-    @Bean
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider());

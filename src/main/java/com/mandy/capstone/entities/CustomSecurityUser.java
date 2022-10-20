@@ -1,4 +1,4 @@
-package com.mandy.capstone.security;
+package com.mandy.capstone.entities;
 
 import com.mandy.capstone.entities.Authorities;
 import com.mandy.capstone.entities.User;

@@ -6,7 +6,6 @@ const registerLastname = document.getElementById('lastname')
 const registerPhonenumber = document.getElementById('phonenumber')
 const csrfToken = document.getElementById("csrf")
 const headers = {
-//'Content-Type': 'application/json',
 'Content-Type': 'application/json',
 "X-CSRF-Token": csrfToken.value
 }

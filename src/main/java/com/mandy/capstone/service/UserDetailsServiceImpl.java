@@ -2,7 +2,7 @@ package com.mandy.capstone.service;
 
 import com.mandy.capstone.entities.User;
 import com.mandy.capstone.repositories.UserRepository;
-import com.mandy.capstone.security.CustomSecurityUser;
+import com.mandy.capstone.entities.CustomSecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,7 +1,8 @@
 package com.mandy.capstone.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.mandy.capstone.security.CustomSecurityUser;
+import com.mandy.capstone.dtos.AuthoritiesDto;
+import com.mandy.capstone.dtos.BorrowerDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 
 @Entity
-//@Table (name = "authorities")
+@Table (name = "authorities")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class Authorities implements GrantedAuthority {
 //    private static final long serialVersionUID = -8123526131047887755L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long authority_id;
     private String authority;
 
     @ManyToOne
@@ -31,6 +32,11 @@ public class Authorities implements GrantedAuthority {
 
     public Authorities(String role) {
         this.authority = role;
+    }
+
+    public Authorities(AuthoritiesDto authoritiesDto) {
+        this.authority_id= authoritiesDto.getAuthority_id();
+        this.authority= authoritiesDto.getAuthority();
     }
 
 }
