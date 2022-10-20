@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@Controler will return the string as template url . @RestController will return string as string.
+//@Controler will return the string as template url .
+// //@RestController will return string as string.
+//@RestController = @Controller and @ResponseBody all at one
 @Controller
 @RequestMapping
 public class LoginRegisterController {

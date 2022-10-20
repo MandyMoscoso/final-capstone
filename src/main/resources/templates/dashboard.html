@@ -15,6 +15,7 @@
 <body>
 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <span th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</span>
+<span id="userid" class="d-none" type="hidden" th:text="${#authentication.getPrincipal().getId()}"></span>
 
 
 <form method="post" action="/logout">
