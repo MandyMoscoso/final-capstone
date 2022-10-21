@@ -17,7 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 //GrantedAuthority at some point need serial so we need a serial
 public class Authorities implements GrantedAuthority {
-//    private static final long serialVersionUID = -8123526131047887755L;
+    //I kept all the column name as variable names so I skipped @Column for now. Will need @Column if wanna do more customization
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long authority_id;

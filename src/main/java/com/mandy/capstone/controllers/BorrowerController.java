@@ -19,11 +19,10 @@ public class BorrowerController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping("/getuser/{userId}")
     public UserDto getUser(@PathVariable Long userId){
         UserDto userDto = userService.getUserByUserId(userId) ;
-//        userDto.setAuthoritiesDto(null);
+        userDto.setAuthoritiesDto(null);
         userDto.setPassword(null);
         System.out.println(userDto);
         return userDto;
@@ -34,10 +33,9 @@ public class BorrowerController {
     @PutMapping("/edituser/{userId}")
     public void editUser(@RequestBody UserDto userDto, @PathVariable Long userId){
         UserDto savedUser =userService.getUserByUserId(userId) ;
-
         userDto.setAuthoritiesDto(savedUser.getAuthoritiesDto());
         userDto.getBorrowerDto().setBorrower_id(savedUser.getBorrowerDto().getBorrower_id());
-        //password doesn't show up or pass in request so if password = null, meaning it is unchanged
+//password doesn't show up or pass in request so if password = null, meaning it is unchanged
         if(userDto.getPassword()=="" ||userDto.getPassword()==null){
             userDto.setPassword(savedUser.getPassword());
         }else{

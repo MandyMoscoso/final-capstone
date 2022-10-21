@@ -14,6 +14,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Borrower {
+
+//I kept all the column name as variable names so I skipped @Column for now. Will need @Column if wanna do more customization
+
+//By default Spring uses org.springframework.boot.orm.jpa.SpringNamingStrategy to generate table names. This is a  extension of org.hibernate.cfg.ImprovedNamingStrategy.The ImprovedNamingStrategy will convert CamelCase to SNAKE_CASE. This explained why my table column's name is loan_amount, credit_score...
+
+// could always just specify column name/ variable in lowercase to avoid this name change. or use spring.jpa.hibernate.naming_strategy=org.hibernate.cfg.EJB3NamingStrategy because EJB3NamingStrategy just uses the table name unchanged
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long borrower_id;

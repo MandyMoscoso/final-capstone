@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class User {
 
+    //I kept all the column name as variable names so I skipped @Column for now. Will need @Column if wanna do more customization
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

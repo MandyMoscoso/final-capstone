@@ -16,16 +16,10 @@ import java.util.List;
 @Controller
 @RequestMapping
 public class LoginRegisterController {
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
     @GetMapping("/register")
     public String register(){
         return "register";
     }
-
-
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired

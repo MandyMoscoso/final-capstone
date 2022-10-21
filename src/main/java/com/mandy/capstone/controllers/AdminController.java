@@ -28,7 +28,7 @@ public class AdminController {
         return userService.addNewAccount(newUser, role);
     }
 
-    //I am using MvcConfig for view, so no need for this get request. This is just an alternate way to get the job done. MvcConfig has all view in 1 place so easier to keep track.
+//I am using MvcConfig for view, so no need for this get request. This is just an alternative way to get the job done. MvcConfig has all view in 1 place so easier to keep track.
 //    @GetMapping("/adminnewuser")
 //    public String getCreateUserPage(){
 //        return "admin-create-user";
@@ -38,4 +38,5 @@ public class AdminController {
 //    public String getAdminHomePage(){
 //        return "admindashboard";
 //    }
+
 }

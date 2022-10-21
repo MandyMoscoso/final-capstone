@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -43,21 +42,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                         .formLogin()
                           .loginPage("/login")//
+  // if DaoAuthenticationProvider below return the valid authProvider, then redirect to default endpoint below. When loading the endpoint, I created dashboard controller to redirect user to the correct page based on their role.
                           .defaultSuccessUrl("/dashboard", true)
                           .permitAll();
-//                //control how many people can log in at the same time. current set up to 1.
+//control how many people can log in at the same time. current set up to 1.
 //                .and()
 //                .sessionManagement()
 //                .maximumSessions(1);
     }
+
+    //this method is called in order to authenticate a user, when a username and password is submitted, a UserdetailsService is called to find the password for that user to see if it is correct. It will also provide some other information about the user, such as the authorities. I used this to verify login info.
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
-    }
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authProvider());
     }
 }
