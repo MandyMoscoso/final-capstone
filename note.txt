@@ -10,3 +10,8 @@ set authority = 'ROLE_ADMIN'
 where user_id = 2;
 
 postgres://degshpstlmpybq:3ee5270fba1375d2f7915feac8dafae51db006e7df35e79a3656d00330690816@ec2-18-208-55-135.compute-1.amazonaws.com:5432/dersejuimtu4f5
+
+
+UserDto(id=8, username=admin@gmail.com, password=null, firstname=Mandy, lastname=Smiths, phonenumber=123, authoritiesDto=[Authorities(authority_id=4, authority=ROLE_USER, user=User(id=8, username=admin@gmail.com, password=$2a$10$y93imZlhswFF5HjwR92VT.7otmqYjoPByfNEmJzGtJ2nwlhb6aLuy, firstname=Mandy, lastname=Smiths, phonenumber=123))], borrowerDto=BorrowerDto(borrower_id=4, address=null, loanAmount=0.0, creditScore=0, propertyValue=0.0, loanType=null, propertyType=null, occupancyType=null, loanPurpose=Purchase, loanTerm=null, userDto=null))
+
+UserDto(id=null, username=kate@gmail.com, password=$2a$10$gjmdy0xB3wgiyn.5Gz8A9.K3PKosWBvRsO7IO.xjz1TfzEkGS4Y1G, firstname=Kate, lastname=Greens, phonenumber=, authoritiesDto=[AuthoritiesDto(authority_id=null, authority=null, userDto=null)], borrowerDto=BorrowerDto(borrower_id=null, address=123 h stree, loanAmount=0.0, creditScore=0, propertyValue=0.0, loanType=, propertyType=, occupancyType=, loanPurpose=, loanTerm=, userDto=null))

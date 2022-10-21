@@ -48,6 +48,7 @@ const  getUserInfo = async() =>{
     })
             .then(response => response.json())
              .then(data =>{
+             console.log(data)
                  populateUser(data)
               })
              .catch(err => console.error(err))

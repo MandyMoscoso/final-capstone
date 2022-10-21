@@ -36,14 +36,26 @@ public class UserServiceImpl implements UserService{
         //link authority with user to get the correct user_id
         authority.setUser(user);
         user.getAuthorities().add(authority);
-
         //add Borrower to User obj since this is a borrower register
         Borrower borrower = new Borrower();
-        borrower.setLoanPurpose("Purchase");
         borrower.setUser(user);
-        user.setBorrower(borrower);
         userRepository.saveAndFlush(user);
         response.add("login");
+        System.out.println(response);
+        return response;
+    }
+    @Override
+    @Transactional
+    public List<String> addNewAccount(UserDto newUser, String role) {
+        List<String> response = new ArrayList<>();
+        User user = new User(newUser);
+        Authorities authority = new Authorities(role);
+        authority.setUser(user);
+        user.getAuthorities().add(authority);
+        Borrower borrower = user.getBorrower();
+        borrower.setUser(user);
+        userRepository.saveAndFlush(user);
+        response.add("completed adding user");
         System.out.println(response);
         return response;
     }

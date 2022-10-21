@@ -23,7 +23,7 @@ public class BorrowerController {
     @GetMapping("/getuser/{userId}")
     public UserDto getUser(@PathVariable Long userId){
         UserDto userDto = userService.getUserByUserId(userId) ;
-        userDto.setAuthoritiesDto(null);
+//        userDto.setAuthoritiesDto(null);
         userDto.setPassword(null);
         System.out.println(userDto);
         return userDto;

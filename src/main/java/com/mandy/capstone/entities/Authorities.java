@@ -35,8 +35,13 @@ public class Authorities implements GrantedAuthority {
     }
 
     public Authorities(AuthoritiesDto authoritiesDto) {
-        this.authority_id= authoritiesDto.getAuthority_id();
-        this.authority= authoritiesDto.getAuthority();
+        if(authoritiesDto.getAuthority_id()!=null){
+            this.authority_id= authoritiesDto.getAuthority_id();
+        }
+        if(authoritiesDto.getAuthority()!=null){
+            this.authority= authoritiesDto.getAuthority();
+        }
+
     }
 
 }

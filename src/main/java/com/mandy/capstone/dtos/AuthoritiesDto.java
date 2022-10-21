@@ -15,8 +15,13 @@ public class AuthoritiesDto {
     private UserDto userDto;
 
     public AuthoritiesDto(Authorities authorities) {
-        this.authority_id=authorities.getAuthority_id();
-        this.authority= authorities.getAuthority();
+        if(authorities.getAuthority_id()!=null){
+            this.authority_id=authorities.getAuthority_id();
+        }
+        if(authorities.getAuthority()!=null){
+            this.authority= authorities.getAuthority();
+        }
+
     }
 
     public AuthoritiesDto(String role) {
