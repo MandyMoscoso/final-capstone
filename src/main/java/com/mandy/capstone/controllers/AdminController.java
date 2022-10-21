@@ -28,13 +28,14 @@ public class AdminController {
         return userService.addNewAccount(newUser, role);
     }
 
-    @GetMapping("/adminnewuser")
-    public String getCreateUserPage(){
-        return "admin-create-user";
-    }
-
-    @GetMapping("/adminhome")
-    public String getAdminHomePage(){
-        return "admindashboard";
-    }
+    //I am using MvcConfig for view, so no need for this get request. This is just an alternate way to get the job done. MvcConfig has all view in 1 place so easier to keep track.
+//    @GetMapping("/adminnewuser")
+//    public String getCreateUserPage(){
+//        return "admin-create-user";
+//    }
+//
+//    @GetMapping("/adminhome")
+//    public String getAdminHomePage(){
+//        return "admindashboard";
+//    }
 }
