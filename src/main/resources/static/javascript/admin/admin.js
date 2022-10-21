@@ -41,21 +41,7 @@ const headers = {
 //editItem.innerHTML=document.getElementById("edit-" + item).value;
 //};
 //
-//const  getUserInfo = async() =>{
-//    const response = await fetch(`${baseUrl}/getuser/${userId}`, {
-//        method: "GET",
-//        headers: {
-//                 'Content-Type': 'application/json',
-//                 }
-//    })
-//            .then(response => response.json())
-//             .then(data =>{
-//                 populateUser(data)
-//              })
-//             .catch(err => console.error(err))
-//}
-//start the page with loading user info. should be commmented out when it is admin
-//getUserInfo();
+
 
 //const populateUser = (obj) =>{
 //    firstName.innerHTML=obj.firstname;
@@ -113,6 +99,24 @@ const showStaffsForm = () =>{
     userInfoForm.classList.remove("d-none")
     if(role.value==="ROLE_USER"  ){
     borrowerInfoForm.classList.remove("d-none")
+    } else{
+        borrowerInfoForm.classList.add("d-none")
     }
 }
 
+//GET USER INFO PAGE
+const  getUserInfo = async() =>{
+    const response = await fetch(`${baseUrl}/admin/alluser`, {
+        method: "GET",
+        headers: {
+                 'Content-Type': 'application/json',
+                 }
+    })
+            .then(response => response.json())
+             .then(data =>{
+                 console.log(data)
+              })
+             .catch(err => console.error(err))
+}
+//start the page with loading user info. should be commmented out when it is admin
+//getUserInfo();

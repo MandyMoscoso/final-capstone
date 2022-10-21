@@ -14,8 +14,8 @@
 
 <body>
 <p type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-<span th:inline="text">Welcome Admin [[${#httpServletRequest.remoteUser}]]</span>
-<span id="userid" type="hidden" th:text="${#authentication.getPrincipal().getId()}"></span> <!-- No ".getUsername()"-->
+<span th:inline="text">Welcome this is admindashboard Admin [[${#httpServletRequest.remoteUser}]]</span>
+<span id="userid" class="d-none" type="hidden" th:text="${#authentication.getPrincipal().getId()}"></span> <!-- No ".getUsername()"-->
 
 
 
@@ -30,9 +30,9 @@
       <div class="col">
         <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Add Staff</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add User</li>
+            <li class="breadcrumb-item"><a href="adminhome">Home</a></li>
+            <li class="breadcrumb-item"><a href="adminnewuser">Add User</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Other Admin Stuff</li>
           </ol>
         </nav>
       </div>

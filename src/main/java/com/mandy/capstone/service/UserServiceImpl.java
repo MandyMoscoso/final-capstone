@@ -52,8 +52,7 @@ public class UserServiceImpl implements UserService{
         Authorities authority = new Authorities(role);
         authority.setUser(user);
         user.getAuthorities().add(authority);
-        Borrower borrower = user.getBorrower();
-        borrower.setUser(user);
+        user.getBorrower().setUser(user);
         userRepository.saveAndFlush(user);
         response.add("completed adding user");
         System.out.println(response);

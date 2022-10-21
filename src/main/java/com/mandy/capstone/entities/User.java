@@ -34,7 +34,7 @@ public class User {
     //FetchType: there are EAGER and LAZY. LAZY will not pull the authority. EAGER will. but this is less effective but easier to use. We have to use LAZY in this case to get Authority othrewise log in function will have issue.
     //cascade = CascadeType.ALL mean if we delete the user, all authorities (data from other tables that linked to this user) related to that user will be deleted as well. If we want to keep the authority (data from other tables that linked to this user) related to that user, we will use CascadeType.PERSIST. ALL type could be dangerous if you don't know what will you delete.
     //mappedBy: the name of the column in the other table that mapped to this table. In thsi case, "user" is the name of the column in authorities table that we want to map here.
-    //we have Set<Authorities> because this is a One to many relationship. we may have many authorities for this user.
+    //we have Set<Authorities> because this is a One-to-many relationship. we may have many authorities for this user.
     //in authorities table, it will be the opposite. we only have User user, since the other side of the relationship is Many to one - only 1 user for that authority id.
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Authorities> authorities = new HashSet<>();
@@ -50,7 +50,6 @@ public class User {
         if(userDto.getId()!=null){
             this.setId(userDto.getId());
         }
-
         this.setPassword(((userDto.getPassword())));
         this.setUsername(userDto.getUsername());
         this.setFirstname(userDto.getFirstname());
