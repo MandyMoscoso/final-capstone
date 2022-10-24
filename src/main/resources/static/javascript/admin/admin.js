@@ -6,30 +6,32 @@ const role = document.getElementById("role")
 const userInfoForm = document.getElementById("user-info-form")
 const borrowerInfoForm = document.getElementById("borrower-info-form")
 
-const firstName = document.getElementById("firstname");
-const lastName = document.getElementById("lastname");
-const email = document.getElementById("username");
-const password = document.getElementById("password");
-const phone = document.getElementById("phone-number");
-const address = document.getElementById("address");
-const creditScore = document.getElementById("credit-score");
-const loanAmount = document.getElementById("loan-amount");
-const loanPurpose = document.getElementById("loan-purpose");
-const loanTerm = document.getElementById("loan-term");
-const loanType = document.getElementById("loan-type");
-const occupancy = document.getElementById("occupancy");
-const propertyType = document.getElementById("property-type");
-const propertyValue = document.getElementById("property-value");
-const saveUser = document.getElementById("saveBtn");
+// const eachUserId = document.getElementById("user-id");
+// const firstName = document.getElementById("firstname");
+// const lastName = document.getElementById("lastname");
+// const email = document.getElementById("email");
+// const password = document.getElementById("password");
+// const phone = document.getElementById("phone");
+// const role = document.getElementById("role");
+// const address = document.getElementById("address");
+// const creditScore = document.getElementById("credit-score");
+// const loanAmount = document.getElementById("loan-amount");
+// const loanPurpose = document.getElementById("loan-purpose");
+// const loanTerm = document.getElementById("loan-term");
+// const loanType = document.getElementById("loan-type");
+// const occupancy = document.getElementById("occupancy");
+// const propertyType = document.getElementById("property-type");
+// const propertyValue = document.getElementById("property-value");
+const allUserTable = document.getElementById("all-user-table");
 
 
-const editUser= (item) => {
-    const editForm = document.createElement("form");
-    editForm.innerHTML= `<input id="edit-${item}" type = "text" placeholder = "Enter new value"></input><input type="button" onclick="submitEdit('${item}')" value="Submit" id='userID'> </input>`;
-    document.querySelector(`#${item}`).innerHTML=""
-    document.querySelector(`#${item}`).appendChild(editForm);
-    return ;
-}
+// const editUser= (item) => {
+//     const editForm = document.createElement("form");
+//     editForm.innerHTML= `<input id="edit-${item}" type = "text" placeholder = "Enter new value"></input><input type="button" onclick="submitEdit('${item}')" value="Submit" id='userID'> </input>`;
+//     document.querySelector(`#${item}`).innerHTML=""
+//     document.querySelector(`#${item}`).appendChild(editForm);
+//     return ;
+// }
 
 const headers = {
 'Content-Type': 'application/json',
@@ -42,22 +44,50 @@ const headers = {
 //};
 //
 
-
-//const populateUser = (obj) =>{
+const createUserCard = (obj) =>{
+    allUserTable.innerHTML="";
+    obj.forEach(obj => {
+        let roles = "";
+        for (let i of obj.authorities){
+            roles += i.authority.replace("ROLE_","") +", "
+        };
+        roles = roles.slice(0,-2);
+        let userCard = document.createElement("tr");
+        userCard.classList.add("m-2");
+        userCard.innerHTML = `
+             <td><input value=${obj.id} class = "form-check-input" type="checkbox" name = "selections" ></td>
+             <th scope="row" id=${obj.id} >${obj.id}</th>
+             <td>${obj.firstname}</td>
+             <td>${obj.lastname}</td>
+             <td>${obj.username}</td>
+             <td>${obj.phonenumber}</td>
+             <td>${roles}</td>
+        `
+        allUserTable.append(userCard);
+    })
+}
+// const populateUser = (obj) =>{
+//     id.innerHTML = obj.id;
 //    firstName.innerHTML=obj.firstname;
 //    lastName.innerHTML=obj.lastname;
 //    email.innerHTML=obj.username;
 //    phone.innerHTML=obj.phonenumber;
-//    address.innerHTML=obj.borrowerDto.address;
-//    creditScore.innerHTML=obj.borrowerDto.creditScore;
-//    loanAmount.innerHTML=obj.borrowerDto.loanAmount
-//    loanPurpose.innerHTML=obj.borrowerDto.loanPurpose
-//    loanTerm.innerHTML=obj.borrowerDto.loanTerm
-//    loanType.innerHTML=obj.borrowerDto.loanType
-//    occupancy.innerHTML=obj.borrowerDto.occupancyType
-//    propertyType.innerHTML=obj.borrowerDto.propertyType
-//    propertyValue.innerHTML=obj.borrowerDto.propertyValue
-//}
+//    let roles = "";
+//    for (let i of obj.authorities){
+//         roles = [...i.authority]
+//    }
+//    role.innerHTML=roles;
+
+   // address.innerHTML=obj.borrowerDto.address;
+   // creditScore.innerHTML=obj.borrowerDto.creditScore;
+   // loanAmount.innerHTML=obj.borrowerDto.loanAmount
+   // loanPurpose.innerHTML=obj.borrowerDto.loanPurpose
+   // loanTerm.innerHTML=obj.borrowerDto.loanTerm
+   // loanType.innerHTML=obj.borrowerDto.loanType
+   // occupancy.innerHTML=obj.borrowerDto.occupancyType
+   // propertyType.innerHTML=obj.borrowerDto.propertyType
+   // propertyValue.innerHTML=obj.borrowerDto.propertyValue
+// }
 
 
 
@@ -105,7 +135,7 @@ const showStaffsForm = () =>{
 }
 
 //GET USER INFO PAGE
-const  getUserInfo = async() =>{
+const  getAllUserInfo = async() =>{
     const response = await fetch(`${baseUrl}/admin/alluser`, {
         method: "GET",
         headers: {
@@ -114,9 +144,11 @@ const  getUserInfo = async() =>{
     })
             .then(response => response.json())
              .then(data =>{
-                 console.log(data)
+                createUserCard(data)
               })
              .catch(err => console.error(err))
+
 }
+
 //start the page with loading user info. should be commmented out when it is admin
-//getUserInfo();
+getAllUserInfo();

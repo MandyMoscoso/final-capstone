@@ -51,19 +51,21 @@
                     <th scope="col">Last Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone Number</th>
+                    <th scope="col">Role</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="all-user-table">
 <!--                <tr>-->
 <!--                    <td colspan="6" class="text-center">No Data</td>-->
 <!--                </tr>-->
                 <tr>
                     <td><input class = "form-check-input" type="checkbox" name = "selections" ></td>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>123456789</td>
+                    <th scope="row" id="user-id">1</th>
+                    <td id="firstname">Mark</td>
+                    <td id="lastname">Otto</td>
+                    <td id="email">@mdo</td>
+                    <td id="phone">123456789</td>
+                    <td id="role">role</td>
                 </tr>
 <!--                <tr>-->
 <!--                    <th scope="row">2</th>-->
@@ -88,10 +90,10 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"-->
+<!--        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"-->
+<!--        crossorigin="anonymous"></script>-->
 <script th:src="@{/javascript/admin/admin.js}" type="application/javascript"></script>
-<!--<script src="./admin.js"></script>-->
+
 </body>
 </html>

@@ -33,7 +33,7 @@ public class AdminController {
         return userService.addNewAccount(newUser, role);
     }
 
-      @GetMapping("admin/getborrower")
+      @GetMapping("admin/alluser")
     public List <User> showAllUser(){
         return  userRepository.findAll();
     }
