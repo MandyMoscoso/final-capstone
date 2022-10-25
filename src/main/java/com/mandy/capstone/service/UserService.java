@@ -1,10 +1,8 @@
 package com.mandy.capstone.service;
 
 import com.mandy.capstone.dtos.UserDto;
-import com.mandy.capstone.entities.User;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface UserService {
@@ -20,4 +18,7 @@ public interface UserService {
 
     @Transactional
     void updateUserById(UserDto updateUser);
+
+    @Transactional
+    void adminUpdateUserById(UserDto userDto, Long userId, String role);
 }

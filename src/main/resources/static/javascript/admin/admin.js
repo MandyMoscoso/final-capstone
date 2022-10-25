@@ -1,48 +1,34 @@
 
 const baseUrl = "http://localhost:8080";
 const csrfToken = document.getElementById("csrf")
-const userId = document.getElementById("userid").value
-const role = document.getElementById("role")
-const userInfoForm = document.getElementById("user-info-form")
-const borrowerInfoForm = document.getElementById("borrower-info-form")
+// const userId = document.getElementById("userid").value
+// const userInfoForm = document.getElementById("user-info-form")
+// const borrowerInfoForm = document.getElementById("borrower-info-form")
+const pageContent = document.getElementById("home-content")
 
-// const eachUserId = document.getElementById("user-id");
-// const firstName = document.getElementById("firstname");
-// const lastName = document.getElementById("lastname");
-// const email = document.getElementById("email");
-// const password = document.getElementById("password");
-// const phone = document.getElementById("phone");
-// const role = document.getElementById("role");
-// const address = document.getElementById("address");
-// const creditScore = document.getElementById("credit-score");
-// const loanAmount = document.getElementById("loan-amount");
-// const loanPurpose = document.getElementById("loan-purpose");
-// const loanTerm = document.getElementById("loan-term");
-// const loanType = document.getElementById("loan-type");
-// const occupancy = document.getElementById("occupancy");
-// const propertyType = document.getElementById("property-type");
-// const propertyValue = document.getElementById("property-value");
+
+const role = document.getElementById("role");
+const firstName = document.getElementById("firstname");
+const lastName = document.getElementById("lastname");
+const email = document.getElementById("username");
+const password = document.getElementById("password");
+const phone = document.getElementById("phone-number");
+const address = document.getElementById("address");
+const creditScore = document.getElementById("credit-score");
+const loanAmount = document.getElementById("loan-amount");
+const loanPurpose = document.getElementById("loan-purpose");
+const loanTerm = document.getElementById("loan-term");
+const loanType = document.getElementById("loan-type");
+const occupancy = document.getElementById("occupancy");
+const propertyType = document.getElementById("property-type");
+const propertyValue = document.getElementById("property-value");
 const allUserTable = document.getElementById("all-user-table");
 
-
-// const editUser= (item) => {
-//     const editForm = document.createElement("form");
-//     editForm.innerHTML= `<input id="edit-${item}" type = "text" placeholder = "Enter new value"></input><input type="button" onclick="submitEdit('${item}')" value="Submit" id='userID'> </input>`;
-//     document.querySelector(`#${item}`).innerHTML=""
-//     document.querySelector(`#${item}`).appendChild(editForm);
-//     return ;
-// }
 
 const headers = {
 'Content-Type': 'application/json',
 "X-CSRF-Token": csrfToken.value
 }
-
-//const submitEdit = (item) =>{
-//let editItem = document.getElementById(item);
-//editItem.innerHTML=document.getElementById("edit-" + item).value;
-//};
-//
 
 const createUserCard = (obj) =>{
     allUserTable.innerHTML="";
@@ -62,77 +48,14 @@ const createUserCard = (obj) =>{
              <td>${obj.username}</td>
              <td>${obj.phonenumber}</td>
              <td>${roles}</td>
+             <td> <button type="submit" class="btn btn-primary mb-5 me-2" name="edit" value="true" onclick="editUser(${obj.id},'${roles}')">Edit</button>
+</td>
         `
         allUserTable.append(userCard);
     })
 }
-// const populateUser = (obj) =>{
-//     id.innerHTML = obj.id;
-//    firstName.innerHTML=obj.firstname;
-//    lastName.innerHTML=obj.lastname;
-//    email.innerHTML=obj.username;
-//    phone.innerHTML=obj.phonenumber;
-//    let roles = "";
-//    for (let i of obj.authorities){
-//         roles = [...i.authority]
-//    }
-//    role.innerHTML=roles;
-
-   // address.innerHTML=obj.borrowerDto.address;
-   // creditScore.innerHTML=obj.borrowerDto.creditScore;
-   // loanAmount.innerHTML=obj.borrowerDto.loanAmount
-   // loanPurpose.innerHTML=obj.borrowerDto.loanPurpose
-   // loanTerm.innerHTML=obj.borrowerDto.loanTerm
-   // loanType.innerHTML=obj.borrowerDto.loanType
-   // occupancy.innerHTML=obj.borrowerDto.occupancyType
-   // propertyType.innerHTML=obj.borrowerDto.propertyType
-   // propertyValue.innerHTML=obj.borrowerDto.propertyValue
-// }
 
 
-
-const handleSubmit = async () => {
-    let bodyObj = {
-        firstname: firstName.value,
-        lastname: lastName.value,
-        password: password.value,
-        username: email.value,
-        phonenumber: phone.value
-    }
-    if(role.value=="ROLE_USER"){
-    bodyObj.borrowerDto = {
-                                  address: address.value,
-                                  creditScore: creditScore.value,
-                                  loanAmount: loanAmount.value,
-                                  loanPurpose: loanPurpose.value,
-                                  loanTerm: loanTerm.value,
-                                  loanType: loanType.value,
-                                  occupancyType: occupancy.value,
-                                  propertyType: propertyType.value,
-                                  propertyValue: propertyValue.value,
-                                  }
-    }
-    bodyObj = JSON.stringify(bodyObj)
-    console.log(bodyObj)
-    await fetch(`${baseUrl}/admin/createuser/${role.value}`, {
-                  method: "POST",
-                  body: bodyObj,
-                  headers: headers
-              })
-                  .catch(err => console.error(err))
-
-}
-
-//to show form when role admin or staff is chosen
-
-const showStaffsForm = () =>{
-    userInfoForm.classList.remove("d-none")
-    if(role.value==="ROLE_USER"  ){
-    borrowerInfoForm.classList.remove("d-none")
-    } else{
-        borrowerInfoForm.classList.add("d-none")
-    }
-}
 
 //GET USER INFO PAGE
 const  getAllUserInfo = async() =>{
@@ -149,6 +72,296 @@ const  getAllUserInfo = async() =>{
              .catch(err => console.error(err))
 
 }
-
 //start the page with loading user info. should be commmented out when it is admin
 getAllUserInfo();
+
+const deleteUsers =async() =>{
+    let selections = "";
+    for (let i = 0; i <allUserTable.rows.length; i++){
+        if(allUserTable.rows.item(i).cells.item(0).firstElementChild.checked ){
+             selections+=(allUserTable.rows.item(i).cells.item(0).firstElementChild.value)+"-"
+        }
+    }
+    selections = selections.slice(0, -1);
+    await fetch(`${baseUrl}/admin/delete/${selections}`, {
+        method: "DELETE",
+        headers: headers
+    })
+        .catch(err => console.error(err))
+    getAllUserInfo()
+}
+
+const editUser = (id, role) =>{
+    pageContent.innerHTML="";
+    pageContent.innerHTML=`
+    <select id="role" class="form-select" aria-label="Choose role" onChange="showStaffsForm()">                
+                <option value="ROLE_ADMIN" >Admin</option>
+                <option value="ROLE_STAFF">Staff</option>
+                <option value="ROLE_USER">Borrower</option>
+    </select>
+    <div id="user-info-form">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0" value="">First Name</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <input class="text-muted mb-3 form-control " id="firstname"></input>
+                  </div>
+                  <div class="col-sm-3">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Last Name</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <input class="text-muted mb-3 form-control" id="lastname"></input>
+                  </div>
+
+                </div>
+
+
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Email</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <input class="text-muted mb-3 form-control" id="username"></input>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Phone</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <input class="text-muted mb-3 form-control" id="phone-number"></input>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Password</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <input class="text-muted mb-3 form-control" type="password" id="password" ></input>
+                  </div>
+                </div>
+
+                <div class="d-none" id="borrower-info-form">
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Address</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="address"></input>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Credit Score</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="credit-score"></input>
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Loan Amount</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="loan-amount"></input>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Loan Purpose</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="loan-purpose"></input>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Loan term</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="loan-term"></input>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Loan Type</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="loan-type"></input>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Occupancy</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="occupancy"></input>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Property Type</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="property-type"></input>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Property Value</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <input class="text-muted mb-3 form-control" id="property-value"></input>
+                    </div>
+                  </div>
+
+                </div>
+                <button id="saveBtn" type="button" class="btn btn-success col-sm-3" onclick="submitEdit(${id})">Save
+                </button>
+              </div>
+    `
+
+    const  getUserInfo = async() =>{
+        const response = await fetch(`${baseUrl}/getuser/${id}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data =>{
+                console.log(data)
+                populateUser(data)
+            })
+            .catch(err => console.error(err))
+    }
+
+    const populateUser = (obj) =>{
+
+        const borrowerInfoForm = document.getElementById("borrower-info-form")
+        const firstName = document.getElementById("firstname");
+        const lastName = document.getElementById("lastname");
+        const email = document.getElementById("username");
+        const password = document.getElementById("password");
+        const phone = document.getElementById("phone-number");
+        const address = document.getElementById("address");
+        const creditScore = document.getElementById("credit-score");
+        const loanAmount = document.getElementById("loan-amount");
+        const loanPurpose = document.getElementById("loan-purpose");
+        const loanTerm = document.getElementById("loan-term");
+        const loanType = document.getElementById("loan-type");
+        const occupancy = document.getElementById("occupancy");
+        const propertyType = document.getElementById("property-type");
+        const propertyValue = document.getElementById("property-value");
+        firstName.value=obj.firstname;
+        lastName.value=obj.lastname;
+        email.value=obj.username;
+        phone.value=obj.phonenumber;
+        if(role.includes("USER")){
+            borrowerInfoForm.classList.remove("d-none");
+            address.value=obj.borrowerDto.address;
+            creditScore.value=obj.borrowerDto.creditScore;
+            loanAmount.value=obj.borrowerDto.loanAmount
+            loanPurpose.value=obj.borrowerDto.loanPurpose
+            loanTerm.value=obj.borrowerDto.loanTerm
+            loanType.value=obj.borrowerDto.loanType
+            occupancy.value=obj.borrowerDto.occupancyType
+            propertyType.value=obj.borrowerDto.propertyType
+            propertyValue.value=obj.borrowerDto.propertyValue
+        }
+
+    }
+
+    getUserInfo();
+
+    const roleSelection = document.getElementById("role");
+    //declare a function to check the editing user role and calling it at the same time.
+    //This function will check user role then selection that role from selection options.
+    (function() {
+        for(let i =0; i< roleSelection.length; i++){
+            if( roleSelection[i].value=== "ROLE_" + role){
+                roleSelection[i].selected ="selected";
+             }
+        }
+    }());
+}
+const submitEdit = async (id) => {
+    const newRole = document.getElementById("role");
+    const firstName = document.getElementById("firstname");
+    const lastName = document.getElementById("lastname");
+    const email = document.getElementById("username");
+    const password = document.getElementById("password");
+    const phone = document.getElementById("phone-number");
+    const address = document.getElementById("address");
+    const creditScore = document.getElementById("credit-score");
+    const loanAmount = document.getElementById("loan-amount");
+    const loanPurpose = document.getElementById("loan-purpose");
+    const loanTerm = document.getElementById("loan-term");
+    const loanType = document.getElementById("loan-type");
+    const occupancy = document.getElementById("occupancy");
+    const propertyType = document.getElementById("property-type");
+    const propertyValue = document.getElementById("property-value");
+    let bodyObj = {
+        id: id,
+        firstname: firstName.value,
+        lastname: lastName.value,
+        password: password.value,
+        username: email.value,
+        phonenumber: phone.value
+    }
+    if(newRole.value==="ROLE_USER"){
+        bodyObj.borrowerDto = {
+            address: address.value,
+            creditScore: creditScore.value,
+            loanAmount: loanAmount.value,
+            loanPurpose: loanPurpose.value,
+            loanTerm: loanTerm.value,
+            loanType: loanType.value,
+            occupancyType: occupancy.value,
+            propertyType: propertyType.value,
+            propertyValue: propertyValue.value,
+        }
+    }
+    bodyObj = JSON.stringify(bodyObj)
+    console.log(bodyObj,newRole.value)
+    await fetch(`${baseUrl}/admin/edituser/${newRole.value}`, {
+        method: "PUT",
+        body: bodyObj,
+        headers: headers
+    })
+        .catch(err => console.error(err))
+    password.innerHTML=''
+        // .then(window.location.reload())
+
+}
+// //to show form when role admin or staff is chosen
+
+const showStaffsForm = () =>{
+    const borrowerInfoForm = document.getElementById("borrower-info-form")
+    const role = document.getElementById("role");
+    const userInfoForm = document.getElementById("user-info-form")
+    userInfoForm.classList.remove("d-none")
+    if(role.value==="ROLE_USER"  ){
+        borrowerInfoForm.classList.remove("d-none")
+    } else{
+        borrowerInfoForm.classList.add("d-none")
+    }
+}
+

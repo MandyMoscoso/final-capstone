@@ -85,5 +85,19 @@ public class UserServiceImpl implements UserService{
         userRepository.saveAndFlush(user);
     }
 
+    @Override
+    public void adminUpdateUserById(UserDto updateUser, Long userId, String role) {
+        User user = new User(updateUser);
+        Authorities authorities = (Authorities) userRepository.findUserById(userId).getAuthorities().toArray()[0];
+        authorities.setAuthority(role);
+        authorities.setUser(user);
+        if(user.getBorrower()!=null){
+            Borrower borrower = user.getBorrower();
+            borrower.setUser(user);
+        }
+
+        userRepository.saveAndFlush(user);
+    }
+
 
 }
