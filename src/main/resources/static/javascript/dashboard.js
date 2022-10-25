@@ -1,7 +1,6 @@
 
 const baseUrl = "http://localhost:8080";
 const csrfToken = document.getElementById("csrf")
-const userId = document.getElementById("userid").textContent
 const firstName = document.getElementById("firstname");
 const lastName = document.getElementById("lastname");
 const email = document.getElementById("username");
@@ -40,7 +39,7 @@ editItem.innerHTML=document.getElementById("edit-" + item).value;
 };
 
 const  getUserInfo = async() =>{
-    const response = await fetch(`${baseUrl}/getuser/${userId}`, {
+    const response = await fetch(`${baseUrl}/getuser`, {
         method: "GET",
         headers: {
                  'Content-Type': 'application/json',
@@ -74,7 +73,6 @@ getUserInfo();
 
 const handleSubmit = async () => {
     let bodyObj = {
-        id: userId,
         firstname: firstName.textContent,
         lastname: lastName.textContent,
         password: password.textContent,
@@ -94,7 +92,7 @@ const handleSubmit = async () => {
     }
     bodyObj = JSON.stringify(bodyObj)
     console.log(bodyObj)
-    await fetch(`${baseUrl}/edituser/${userId}`, {
+    await fetch(`${baseUrl}/edituser`, {
                   method: "PUT",
                   body: bodyObj,
                   headers: headers

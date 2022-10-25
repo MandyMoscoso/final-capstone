@@ -48,7 +48,7 @@ const createUserCard = (obj) =>{
              <td>${obj.username}</td>
              <td>${obj.phonenumber}</td>
              <td>${roles}</td>
-             <td> <button type="submit" class="btn btn-primary mb-5 me-2" name="edit" value="true" onclick="editUser(${obj.id},'${roles}')">Edit</button>
+             <td class="text-center"> <button type="submit" class="btn btn-outline-secondary btn-sm" name="edit" value="true" onclick="editUser(${obj.id},'${roles}')">Edit</button>
 </td>
         `
         allUserTable.append(userCard);
@@ -293,7 +293,7 @@ const editUser = (id, role) =>{
 
     const roleSelection = document.getElementById("role");
     //declare a function to check the editing user role and calling it at the same time.
-    //This function will check user role then selection that role from selection options.
+    //This function will check user role then select that role from selection options.
     (function() {
         for(let i =0; i< roleSelection.length; i++){
             if( roleSelection[i].value=== "ROLE_" + role){

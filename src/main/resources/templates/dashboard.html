@@ -15,7 +15,7 @@
 <body>
 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <span th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</span>
-<span id="userid" class="d-none" type="hidden" th:text="${#authentication.getPrincipal().getId()}"></span>
+
 
 
 <form method="post" action="/logout">
@@ -38,7 +38,7 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <form id="edit-form">
                     <div class="card mb-4">
                         <div class="card-body">
@@ -205,7 +205,7 @@
                                     <p  class="text-muted mb-0" onclick="editUser('property-value')" >Edit</p>
                                 </div>
                             </div>
-                            <button id="saveBtn" type="button" class="btn btn-success col-sm-3" onclick="handleSubmit()">Save</button>
+                            <button id="saveBtn" type="button" class="btn btn-success col-sm-1 mt-2 btn-sm" onclick="handleSubmit()">Save</button>
 
 
                         </div>

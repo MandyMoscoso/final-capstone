@@ -2,9 +2,11 @@ package com.mandy.capstone.controllers;
 
 import com.mandy.capstone.dtos.AuthoritiesDto;
 import com.mandy.capstone.dtos.UserDto;
+import com.mandy.capstone.entities.CustomSecurityUser;
 import com.mandy.capstone.entities.User;
 import com.mandy.capstone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +21,25 @@ public class BorrowerController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/getuser/{userId}")
-    public UserDto getUser(@PathVariable Long userId){
+    @GetMapping("/getuser")
+    public UserDto getUser(@AuthenticationPrincipal CustomSecurityUser user){
+        Long userId = user.getId();
         UserDto userDto = userService.getUserByUserId(userId) ;
         userDto.setAuthoritiesDto(null);
         userDto.setPassword(null);
-        System.out.println(userDto);
         return userDto;
     }
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @PutMapping("/edituser/{userId}")
-    public void editUser(@RequestBody UserDto userDto, @PathVariable Long userId){
+    @PutMapping("/edituser")
+    public void editUser(@RequestBody UserDto userDto, @AuthenticationPrincipal CustomSecurityUser user){
+        Long userId = user.getId();
+        userDto.setId(userId);
         UserDto savedUser =userService.getUserByUserId(userId) ;
         userDto.setAuthoritiesDto(savedUser.getAuthoritiesDto());
         userDto.getBorrowerDto().setBorrower_id(savedUser.getBorrowerDto().getBorrower_id());
-//password doesn't show up or pass in request so if password = null, meaning it is unchanged
+//password doesn't show up in request so if password = null, meaning it is unchanged
         if(userDto.getPassword()=="" ||userDto.getPassword()==null){
             userDto.setPassword(savedUser.getPassword());
         }else{
