@@ -44,34 +44,57 @@ const  getUserInfo = async() =>{
         .then(response => response.json())
         .then(data =>{
             console.log(data)
-            // populateUser(data)
+            populateUser(data)
         })
         .catch(err => console.error(err))
 }
 
 const populateUser = (obj) =>{
-    creditScore.innerHTML=obj.borrowerDto.creditScore;
-    loanAmount.innerHTML=obj.borrowerDto.loanAmount
-    // loanPurpose.innerHTML=obj.borrowerDto.loanPurpose
-    // loanTerm.innerHTML=obj.borrowerDto.loanTerm
-    // loanType.innerHTML=obj.borrowerDto.loanType
-    // occupancy.innerHTML=obj.borrowerDto.occupancyType
-    // propertyType.innerHTML=obj.borrowerDto.propertyType
-    propertyValue.innerHTML=obj.borrowerDto.propertyValue
-
-
-
-
-    const loanPurpose = document.getElementById("loan-purpose");
-    //declare a function to check the editing user role and calling it at the same time.
-    //This function will check user role then select that role from selection options.
+    creditScore.value=obj.borrowerDto.creditScore;
+    loanAmount.value=obj.borrowerDto.loanAmount
+    const loanPurposeSelection = document.getElementById("loan-purpose");
     (function() {
-        for(let i =0; i< loanPurpose.length; i++){
-            if( loanPurpose[i].value=== obj.borrowerDto.loanPurpose){
-                loanPurpose[i].selected ="selected";
+        for(let i =0; i< loanPurposeSelection.length; i++){
+            if( loanPurposeSelection[i].value=== obj.borrowerDto.loanPurpose){
+                loanPurposeSelection[i].selected ="selected";
             }
         }
     }());
+    const loanTerm = document.getElementById("loan-term");
+    (function() {
+        for(let i =0; i< loanTerm.length; i++){
+            if( loanTerm[i].value=== obj.borrowerDto.loanTerm){
+                loanTerm[i].selected ="selected";
+            }
+        }
+    }());
+
+    const loanType = document.getElementById("loan-type");
+    (function() {
+        for(let i =0; i< loanType.length; i++){
+            if( loanType[i].value=== obj.borrowerDto.loanType){
+                loanType[i].selected ="selected";
+            }
+        }
+    }());
+    const occupancy = document.getElementById("occupancy");
+    (function() {
+        for(let i =0; i< occupancy.length; i++){
+            if( occupancy[i].value=== obj.borrowerDto.occupancyType){
+                occupancy[i].selected ="selected";
+            }
+        }
+    }());
+
+    const propertyType = document.getElementById("property-type");
+    (function() {
+        for(let i =0; i< propertyType.length; i++){
+            if( propertyType[i].value=== obj.borrowerDto.propertyType){
+                propertyType[i].selected ="selected";
+            }
+        }
+    }());
+    propertyValue.value=obj.borrowerDto.propertyValue
 }
 getUserInfo();
 
