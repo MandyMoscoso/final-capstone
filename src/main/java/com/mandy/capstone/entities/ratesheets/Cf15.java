@@ -13,10 +13,8 @@ import javax.persistence.Table;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cf15 {
+public class Cf15 extends BaseRate{
     @Id
     private double rate;
-    private double day15;
-    private double day30;
-    private double day45;
+
 }

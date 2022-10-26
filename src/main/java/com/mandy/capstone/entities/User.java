@@ -37,7 +37,7 @@ public class User {
     //mappedBy: the name of the column in the other table that mapped to this table. In thsi case, "user" is the name of the column in authorities table that we want to map here.
     //we have Set<Authorities> because this is a One-to-many relationship. we may have many authorities for this user.
     //in authorities table, it will be the opposite. we only have User user, since the other side of the relationship is Many to one - only 1 user for that authority id.
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Authorities> authorities = new HashSet<>();
 
     @EqualsAndHashCode.Exclude

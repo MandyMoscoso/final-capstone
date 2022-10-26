@@ -51,16 +51,16 @@ const  getUserInfo = async() =>{
 
 const populateUser = (obj) =>{
     creditScore.value=obj.borrowerDto.creditScore;
-    loanAmount.value=obj.borrowerDto.loanAmount
-    const loanPurposeSelection = document.getElementById("loan-purpose");
+    loanAmount.value=obj.borrowerDto.loanAmount;
+    // const loanPurposeSelection = document.getElementById("loan-purpose");
     (function() {
-        for(let i =0; i< loanPurposeSelection.length; i++){
-            if( loanPurposeSelection[i].value=== obj.borrowerDto.loanPurpose){
-                loanPurposeSelection[i].selected ="selected";
+        for(let i =0; i< loanPurpose.length; i++){
+            if( loanPurpose[i].value=== obj.borrowerDto.loanPurpose){
+                loanPurpose[i].selected ="selected";
             }
         }
     }());
-    const loanTerm = document.getElementById("loan-term");
+    // const loanTerm = document.getElementById("loan-term");
     (function() {
         for(let i =0; i< loanTerm.length; i++){
             if( loanTerm[i].value=== obj.borrowerDto.loanTerm){
@@ -69,7 +69,7 @@ const populateUser = (obj) =>{
         }
     }());
 
-    const loanType = document.getElementById("loan-type");
+    // const loanType = document.getElementById("loan-type");
     (function() {
         for(let i =0; i< loanType.length; i++){
             if( loanType[i].value=== obj.borrowerDto.loanType){
@@ -77,7 +77,7 @@ const populateUser = (obj) =>{
             }
         }
     }());
-    const occupancy = document.getElementById("occupancy");
+    // const occupancy = document.getElementById("occupancy");
     (function() {
         for(let i =0; i< occupancy.length; i++){
             if( occupancy[i].value=== obj.borrowerDto.occupancyType){
@@ -86,7 +86,7 @@ const populateUser = (obj) =>{
         }
     }());
 
-    const propertyType = document.getElementById("property-type");
+    // const propertyType = document.getElementById("property-type");
     (function() {
         for(let i =0; i< propertyType.length; i++){
             if( propertyType[i].value=== obj.borrowerDto.propertyType){
@@ -100,7 +100,33 @@ getUserInfo();
 
 const checkRate = () =>{
     console.log("checking rate")
-    getCashoutRate();
+    const ltv = loanAmount.value/propertyValue.value * 100;
+    const baseRate = (function() {
+        switch (loanTerm.value){
+            case "15" : getCf15Rate(); break;
+            case "20" : getCf20Rate(); break;
+            case "30": getCf30Rate(); break;
+            default: return "need to choose a correct loan term"
+        }
+    }());
+    const ficoRate = [];
+    let occupancyRate = getOccupancyRate();
+    let propertyRate = getPropertyTypeRate();
+    let cashOutRate=0;
+    if(loanPurpose.value.includes("Cashout")){
+        cashOutRate=getCashoutRate();
+    }
+
+    const show = async () => {
+        await getFicoRate();
+        console.log(ficoRate);
+    }
+    show();
+
+
+
+
+
 }
 
 const getCashoutRate =async ()=>{
@@ -112,7 +138,8 @@ const getCashoutRate =async ()=>{
     })
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
+            // console.log(data)
+            return data;
         })
         .catch(err => console.error(err))
 }
@@ -125,7 +152,8 @@ const getCf15Rate =async ()=>{
     })
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
+            // console.log(data)
+            return data;
         })
         .catch(err => console.error(err))
 }
@@ -138,23 +166,25 @@ const getCf20Rate =async ()=>{
     })
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
+            // console.log(data)
+            return data;
         })
         .catch(err => console.error(err))
 }
-const getCf30hbRate =async ()=>{
-    const response = await fetch(`${baseUrl}/rate/cf30hb`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(response => response.json())
-        .then(data =>{
-            console.log(data)
-        })
-        .catch(err => console.error(err))
-}
+// const getCf30hbRate =async ()=>{
+//     const response = await fetch(`${baseUrl}/rate/cf30hb`, {
+//         method: "GET",
+//         headers: {
+//             'Content-Type': 'application/json',
+//         }
+//     })
+//         .then(response => response.json())
+//         .then(data =>{
+//             console.log(data)
+//             return data;
+//         })
+//         .catch(err => console.error(err))
+// }
 const getCf30Rate =async ()=>{
     const response = await fetch(`${baseUrl}/rate/cf30`, {
         method: "GET",
@@ -164,7 +194,8 @@ const getCf30Rate =async ()=>{
     })
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
+            // console.log(data)
+            return data;
         })
         .catch(err => console.error(err))
 }
@@ -177,7 +208,9 @@ const getFicoRate =async ()=>{
     })
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
+            // console.log(data)
+            ficoRate=data
+            return data;
         })
         .catch(err => console.error(err))
 }
@@ -190,7 +223,8 @@ const getOccupancyRate =async ()=>{
     })
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
+            // console.log(data)
+            return data;
         })
         .catch(err => console.error(err))
 }
@@ -203,7 +237,8 @@ const getPropertyTypeRate =async ()=>{
     })
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
+            // console.log(data)
+            return data;
         })
         .catch(err => console.error(err))
 }

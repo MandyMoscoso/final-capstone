@@ -1,20 +1,9 @@
 package com.mandy.capstone.entities.ratesheets;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "fico_adj")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class FicoAdj {
-    @Id
+public class AdjRate {
     private Integer fico;
     private double ltv60;
     private double ltv70;
@@ -36,6 +25,5 @@ public class FicoAdj {
             default: return 100.00;
         }
     }
-
 
 }

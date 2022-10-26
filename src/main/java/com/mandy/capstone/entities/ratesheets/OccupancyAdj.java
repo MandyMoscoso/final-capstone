@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class OccupancyAdj {
     @Id
-    private String occupancy;
+    private Integer fico;
     private double ltv60;
     private double ltv70;
     private double ltv75;
@@ -23,5 +23,18 @@ public class OccupancyAdj {
     private double ltv85;
     private double ltv90;
     private double ltv95;
+
+    public double get(String column){
+        switch(column){
+            case "ltv60": return ltv60;
+            case "ltv70": return ltv70;
+            case "ltv75": return ltv75;
+            case "ltv80": return ltv80;
+            case "ltv85": return ltv85;
+            case "ltv90" : return ltv90;
+            case "ltv95": return ltv95;
+            default: return 100.00;
+        }
+    }
     
 }
