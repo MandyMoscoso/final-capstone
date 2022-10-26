@@ -29,9 +29,9 @@
             <div class="col">
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">User</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                        <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="userprofile">User Profile</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"></li>
                     </ol>
                 </nav>
             </div>
@@ -42,180 +42,83 @@
                 <form id="edit-form">
                     <div class="card mb-4">
                         <div class="card-body">
-
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0" value="">First Name</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="firstname">Jane</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('firstname')">Edit</p>
-                                </div>
+                            <div class="row mb-1">
+                                <p class="mb-0 col-sm-2">Loan Amount</p>
+                                <input class="text-muted mb-0 col-sm-3" type="number" id="loan-amount"></input>
+                                    <p class="mb-0 col-sm-2 text-center">Credit Score</p>
+                                    <input class="text-muted mb-0 col-sm-1" type="number" id="credit-score"></input>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0">Last Name</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="lastname">Doe</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('lastname')">Edit</p>
-                                </div>
-
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0" >Email</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="username">example@example.com</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('username')">Edit</p>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0" >Phone</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="phone-number">(097) 234-5678</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('phone-number')">Edit</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0" >Password</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" type="password" id="password" value=""></p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('password')">Edit</p>
-                                </div>
-                            </div>
-                            <hr>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0">Address</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="address">Bay Area, San Francisco, CA</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('address')">Edit</p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0">Credit Score</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="credit-score">780</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('credit-score')">Edit</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0">Loan Amount</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="loan-amount">123045</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('loan-amount')">Edit</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
+                            <div class="row mb-1">
+                                <div class="col-sm-2">
                                     <p class="mb-0">Loan Purpose</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="loan-purpose">Purchase</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('loan-purpose')">Edit</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
+
+                                <select class="text-muted mb-0 col-sm-3 " name="loan-purpose" id="loan-purpose">
+                                    <option value="Purchase">Purchase</option>
+                                    <option value="Refinance">Refinance</option>
+                                    <option value="Refinance-Cashout">Refinance Cashout</option>
+                                </select>
+                                <div class="col-sm-2 text-center">
                                     <p class="mb-0">Loan term</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="loan-term">30 years</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('loan-term')">Edit</p>
-                                </div>
+                                <select class="text-muted mb-0 col-sm-3 " name="loan-term" id="loan-term">
+                                    <option value="30">30 Years</option>
+                                    <option value="20">20 Years</option>
+                                    <option value="15">15 Years</option>
+                                </select>
                             </div>
-
-                            <div class="row">
-                                <div class="col-sm-3">
+                            <div class="row mb-1">
+                                <div class="col-sm-2">
                                     <p class="mb-0">Loan Type</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="loan-type">Conventional</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('loan-type')">Edit</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
+                                <select class="col-sm-3 mb-0 text-muted " name="loantype" id="loan-type">
+                                    <option value="Conventional">Conventional</option>
+                                </select>
+                                <div class="col-sm-2 text-center">
                                     <p class="mb-0">Occupancy</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="occupancy">Owner occupied</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('occupancy')">Edit</p>
-                                </div>
+                                <select class="col-sm-3 mb-0 text-muted " name="occupancy" id="occupancy">
+                                    <option value="owner-occupied">Owner Occupied</option>
+                                    <option value="Second Home">Second Home</option>
+                                    <option value="Investment">Investment</option>
+                                </select>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-3">
+                            <div class="row mb-1">
+                                <div class="col-sm-2">
                                     <p class="mb-0">Property Type</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="property-type">Single house</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('property-type')">Edit</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
+                                <select class="col-sm-3 mb-0 text-muted " name="property-type" id="property-type">
+                                    <option value="Single House">Single House</option>
+                                    <option value="Townhouse">Townhouse</option>
+                                    <option value="Condo">Condo</option>
+                                    <option value="Duplex">Duplex</option>
+                                    <option value="Triplex">Triplex</option>
+                                    <option value="Fourplex">Fourplex</option>
+                                </select>
+                                <div class="col-sm-2 text-center">
                                     <p class="mb-0">Property Value</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <p class="text-muted mb-0" id="property-value">960000</p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <p  class="text-muted mb-0" onclick="editUser('property-value')" >Edit</p>
-                                </div>
+                                    <input class="text-muted mb-0 col-sm-3" type="number" id="property-value"></input>
                             </div>
-                            <button id="saveBtn" type="button" class="btn btn-success col-sm-1 mt-2 btn-sm" onclick="handleSubmit()">Save</button>
-
+                            <button id="saveBtn" type="button" class="btn btn-success col-sm-2 mt-2 btn-sm" onclick="checkRate()">Show Rate</button>
 
                         </div>
                     </div>
                 </form>
-                <div class="row">
 
-                </div>
             </div>
+<!--            <div class="col-lg-6">-->
+<!--                    <div class="card mb-4">-->
+<!--                        <div class="card-body">-->
+<!--                                                   -->
+
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--            </div>-->
         </div>
+
+        <div id="rates"> Rates here</div>
     </div>
 </section>
 
@@ -223,6 +126,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
-<script th:src="@{/javascript/dashboard.js}" type="application/javascript"></script>
+<script th:src="@{/javascript/rate.js}" type="application/javascript"></script>
 </body>
 </html>

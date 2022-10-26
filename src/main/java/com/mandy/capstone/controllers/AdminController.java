@@ -3,10 +3,12 @@ package com.mandy.capstone.controllers;
 import com.mandy.capstone.dtos.AuthoritiesDto;
 import com.mandy.capstone.dtos.UserDto;
 import com.mandy.capstone.entities.Authorities;
+import com.mandy.capstone.entities.CustomSecurityUser;
 import com.mandy.capstone.entities.User;
 import com.mandy.capstone.repositories.UserRepository;
 import com.mandy.capstone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +50,14 @@ public class AdminController {
         return  userRepository.findAll();
     }
 
-
+    @GetMapping("/admin/getuser/{userId}")
+    @ResponseBody
+    public UserDto getUser(@PathVariable Long userId){
+        UserDto userDto = userService.getUserByUserId(userId) ;
+        userDto.setAuthoritiesDto(null);
+        userDto.setPassword(null);
+        return userDto;
+    }
     @DeleteMapping("admin/delete/{ids}")
     public String deleteUsers (@PathVariable String ids){
         System.out.println(ids);

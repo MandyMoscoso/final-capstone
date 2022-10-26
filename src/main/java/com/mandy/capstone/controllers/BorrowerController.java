@@ -46,7 +46,7 @@ public class BorrowerController {
             String passHash = passwordEncoder.encode(userDto.getPassword());
             userDto.setPassword(passHash);
         }
-        System.out.println(userId + "   " + userDto );
+//        System.out.println(userId + "   " + userDto );
         userService.updateUserById(userDto);
 
     }

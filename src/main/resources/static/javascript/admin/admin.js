@@ -126,7 +126,7 @@ const editUser = (id, role) =>{
                     <p class="mb-0">Email</p>
                   </div>
                   <div class="col-sm-6">
-                    <input class="text-muted mb-3 form-control" id="username"></input>
+                    <input class="text-muted mb-3 form-control" type="email" id="username"></input>
                   </div>
                 </div>
 
@@ -135,7 +135,7 @@ const editUser = (id, role) =>{
                     <p class="mb-0">Phone</p>
                   </div>
                   <div class="col-sm-6">
-                    <input class="text-muted mb-3 form-control" id="phone-number"></input>
+                    <input class="text-muted mb-3 form-control" type="tel" id="phone-number"></input>
                   </div>
                 </div>
 
@@ -164,7 +164,7 @@ const editUser = (id, role) =>{
                       <p class="mb-0">Credit Score</p>
                     </div>
                     <div class="col-sm-6">
-                      <input class="text-muted mb-3 form-control" id="credit-score"></input>
+                      <input class="text-muted mb-3 form-control" type="number" id="credit-score"></input>
                     </div>
                     <div class="col-sm-3">
                     </div>
@@ -174,7 +174,7 @@ const editUser = (id, role) =>{
                       <p class="mb-0">Loan Amount</p>
                     </div>
                     <div class="col-sm-6">
-                      <input class="text-muted mb-3 form-control" id="loan-amount"></input>
+                      <input class="text-muted mb-3 form-control" type="number" id="loan-amount"></input>
                     </div>
                   </div>
 
@@ -228,7 +228,7 @@ const editUser = (id, role) =>{
                       <p class="mb-0">Property Value</p>
                     </div>
                     <div class="col-sm-6">
-                      <input class="text-muted mb-3 form-control" id="property-value"></input>
+                      <input class="text-muted mb-3 form-control" type="number" id="property-value"></input>
                     </div>
                   </div>
 
@@ -239,7 +239,7 @@ const editUser = (id, role) =>{
     `
 
     const  getUserInfo = async() =>{
-        const response = await fetch(`${baseUrl}/getuser/${id}`, {
+        const response = await fetch(`${baseUrl}/admin/getuser/${id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

@@ -20,7 +20,8 @@ const saveUser = document.getElementById("saveBtn");
 
 const editUser= (item) => {
     const editForm = document.createElement("form");
-    editForm.innerHTML= `<input id="edit-${item}" type = "text" placeholder = "Enter new value"></input><input type="button" onclick="submitEdit('${item}')" value="Submit" id='userID'> </input>`;
+    const type =   document.querySelector(`#${item}`).getAttribute("type");
+    editForm.innerHTML= `<input id="edit-${item}" type=${type} placeholder = "Enter new value"></input><input type="button" onclick="submitEdit('${item}')" value="Submit" id='userID'> </input>`;
     document.querySelector(`#${item}`).innerHTML=""
     document.querySelector(`#${item}`).appendChild(editForm);
     return ;
@@ -61,11 +62,11 @@ const populateUser = (obj) =>{
     address.innerHTML=obj.borrowerDto.address;
     creditScore.innerHTML=obj.borrowerDto.creditScore;
     loanAmount.innerHTML=obj.borrowerDto.loanAmount
-    loanPurpose.innerHTML=obj.borrowerDto.loanPurpose
-    loanTerm.innerHTML=obj.borrowerDto.loanTerm
-    loanType.innerHTML=obj.borrowerDto.loanType
-    occupancy.innerHTML=obj.borrowerDto.occupancyType
-    propertyType.innerHTML=obj.borrowerDto.propertyType
+    // loanPurpose.innerHTML=obj.borrowerDto.loanPurpose
+    // loanTerm.innerHTML=obj.borrowerDto.loanTerm
+    // loanType.innerHTML=obj.borrowerDto.loanType
+    // occupancy.innerHTML=obj.borrowerDto.occupancyType
+    // propertyType.innerHTML=obj.borrowerDto.propertyType
     propertyValue.innerHTML=obj.borrowerDto.propertyValue
 }
 
@@ -82,11 +83,11 @@ const handleSubmit = async () => {
         address: address.textContent,
         creditScore: creditScore.textContent,
         loanAmount: loanAmount.textContent,
-        loanPurpose: loanPurpose.textContent,
-        loanTerm: loanTerm.textContent,
-        loanType: loanType.textContent,
-        occupancyType: occupancy.textContent,
-        propertyType: propertyType.textContent,
+        loanPurpose: loanPurpose.value,
+        loanTerm: loanTerm.value,
+        loanType: loanType.value,
+        occupancyType: occupancy.value,
+        propertyType: propertyType.value,
         propertyValue: propertyValue.textContent,
         }
     }

@@ -78,10 +78,8 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public void updateUserById(UserDto updateUser) {
         User user = new User(updateUser);
-        //relink borrower and user to get the correct user_id on borrowers table
         Borrower borrower = user.getBorrower();
         borrower.setUser(user);
-        System.out.println("This is new updated user " +user.getBorrower());
         userRepository.saveAndFlush(user);
     }
 
@@ -95,9 +93,7 @@ public class UserServiceImpl implements UserService{
             Borrower borrower = user.getBorrower();
             borrower.setUser(user);
         }
-
         userRepository.saveAndFlush(user);
     }
-
 
 }
