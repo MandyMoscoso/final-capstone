@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class PropertyTypeAdj {
     @Id
-    private String property_type;
+    private String propertyType;
     private double ltv60;
     private double ltv70;
     private double ltv75;

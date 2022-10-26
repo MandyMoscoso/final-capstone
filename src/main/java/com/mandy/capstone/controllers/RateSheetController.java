@@ -66,18 +66,18 @@ public class RateSheetController {
         }
         double propertyTypeRate = 0;
         if(obj.getPropertyType().equalsIgnoreCase("Duplex") ||obj.getPropertyType().equalsIgnoreCase("Triplex") ||obj.getPropertyType().equalsIgnoreCase("Fourplex")){
-            List<PropertyTypeAdj> propertyTypeRateSheet = propertyTypeAdjRepositories.findAll();
-//            if(obj.getPropertyType().equalsIgnoreCase("Duplex")){
-//                propertyTypeRate= propertyTypeRateSheet.get(0).get(ltvRange);
-//            }else{
-//                propertyTypeRate= propertyTypeRateSheet.get(1).get(ltvRange);
-//            }
+            List<PropertyTypeAdj> propertyTypeRateSheet = propertyTypeAdjRepositories.findAllByOrderByPropertyTypeAsc();
+            if(obj.getPropertyType().equalsIgnoreCase("Duplex")){
+                propertyTypeRate= propertyTypeRateSheet.get(0).get(ltvRange);
+            }else{
+                propertyTypeRate= propertyTypeRateSheet.get(1).get(ltvRange);
+            }
         }
 
 
 
 
-        double adjRate = ficoRate + cashoutRate;
+        double adjRate = ficoRate + cashoutRate+propertyTypeRate;
         return adjRate;
 //        return (List<T>) baseRateSheet;
     }
