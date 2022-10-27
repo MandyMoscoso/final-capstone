@@ -106,13 +106,18 @@ const checkRate = async () =>{
 
 }
 const createRateCard = (obj) =>{
+    let n = loanTerm.value *12;
+    let p = loanAmount.value;
+    let r = obj.rate / 1200;
+    console.log("loan amount: " + p + "loan interest: " + r + "loan term: " + n)
+    let monthlyPmt =Math.round(p * r * ((r +1)**n) / ((1+r)**n -1)) ;
     let rateCard = document.createElement("tr");
     rateCard.innerHTML =`
-            <td>${obj.rate}</td>
+            <td>${obj.rate}%</td>
             <td>${obj.day15}</td>
             <td>${obj.day30}</td>
             <td>${obj.day45}</td>
-            <td>123</td>           
+            <td>$ ${monthlyPmt}</td>           
         `
     rateBody.appendChild(rateCard);
 }
