@@ -34,11 +34,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //turn off for testing need to turnon when done
                     .antMatchers("/admin**/**").hasAnyRole("ADMIN")
                     .antMatchers("/staff**/**").hasAnyRole("STAFF","ADMIN")
-                     .antMatchers("/register**").permitAll()
-                .antMatchers(HttpMethod.GET, "/css/**", "/javascript/**").permitAll()
+                    .antMatchers("/register**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/css/**", "/javascript/**").permitAll()
                 //turn off for testing. need to turn on when done
                     .anyRequest().hasAnyRole("USER","ADMIN","STAFF")
-//                .anyRequest().permitAll()
+//                      .anyRequest().permitAll()
                     .and()
                         .formLogin()
                           .loginPage("/login")//

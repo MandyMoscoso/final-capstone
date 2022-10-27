@@ -14,5 +14,7 @@ import javax.persistence.*;
 public class Cf30 extends BaseRate{
     @Id
     private double rate;
-
+    private double day15;
+    private double day30;
+    private double day45;
 }

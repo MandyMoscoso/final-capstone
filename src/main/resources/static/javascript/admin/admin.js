@@ -254,7 +254,6 @@ const editUser = (id, role) =>{
     }
 
     const populateUser = (obj) =>{
-
         const borrowerInfoForm = document.getElementById("borrower-info-form")
         const firstName = document.getElementById("firstname");
         const lastName = document.getElementById("lastname");

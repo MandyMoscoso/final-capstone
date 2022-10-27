@@ -16,5 +16,7 @@ import javax.persistence.Table;
 public class Cf20 extends BaseRate{
     @Id
     private double rate;
-
+    private double day15;
+    private double day30;
+    private double day45;
 }
