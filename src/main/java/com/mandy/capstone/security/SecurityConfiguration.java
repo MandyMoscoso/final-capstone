@@ -28,24 +28,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 //csrf with any method that can make changes like post, put, delete, patch. This line can be replaced with inline csrf in the html file for that method.
-                .csrf().disable()
+//                .csrf().disable()
                 //antMatchers("/admin/**") admin and any sub need the specific role
                 .authorizeRequests()
                 //turn off for testing need to turnon when done
-//                    .antMatchers("/admin**/**").hasAnyRole("ADMIN")
-//                    .antMatchers("/staff**/**").hasAnyRole("STAFF","ADMIN")
-//                     .antMatchers("/register**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/css/**", "/javascript/**").permitAll()
+                    .antMatchers("/admin**/**").hasAnyRole("ADMIN")
+                    .antMatchers("/staff**/**").hasAnyRole("STAFF","ADMIN")
+                     .antMatchers("/register**").permitAll()
+                .antMatchers(HttpMethod.GET, "/css/**", "/javascript/**").permitAll()
                 //turn off for testing. need to turn on when done
-//                    .anyRequest().hasAnyRole("USER","ADMIN","STAFF")
-                .anyRequest().permitAll()
+                    .anyRequest().hasAnyRole("USER","ADMIN","STAFF")
+//                .anyRequest().permitAll()
                     .and()
                         .formLogin()
                           .loginPage("/login")//
   // if DaoAuthenticationProvider below return the valid authProvider, then redirect to default endpoint below. When loading the endpoint, I created dashboard controller to redirect user to the correct page based on their role.
                           .defaultSuccessUrl("/dashboard", true)
                           .permitAll();
-//control how many people can log in at the same time. current set up to 1.
+//control how many people can log in at the same time. currently set up to 1.
 //                .and()
 //                .sessionManagement()
 //                .maximumSessions(1);

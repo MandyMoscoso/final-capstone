@@ -11,6 +11,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/rate")
 public class RateSheetController {
+    @Autowired
+    private CashOutAdjRepositories cashOutAdjRepositories;
+    @Autowired
+    private Cf15Repositories cf15Repositories;
+    @Autowired
+    private Cf20Repositories cf20Repositories;
+    @Autowired
+    private Cf30Repositories cf30Repositories;
+    @Autowired
+    private FicoAdjRepositories ficoAdjRepositories;
+    @Autowired
+    private OccupancyAdjRepositories occupancyAdjRepositories;
+    @Autowired
+    private PropertyTypeAdjRepositories propertyTypeAdjRepositories;
 
     @PostMapping("/getrate")
 //    public <T> List<T> rates (@RequestBody Borrower obj){
@@ -74,58 +88,30 @@ public class RateSheetController {
             }
         }
 
+//occupancy is not owner occupied, they are 2nd home or investment, and it will have an adjustment rate
+        double occupancyRate = 0;
+        if(obj.getOccupancyType()!="owner-occupied"){
+            List<OccupancyAdj> occupancyRateSheet = occupancyAdjRepositories.findAllByOrderByOccupancyAsc();
+
+            if(obj.getOccupancyType().equalsIgnoreCase("Second Home")){
+                occupancyRate=occupancyRateSheet.get(1).get(ltvRange);
+            }else{
+                occupancyRate=occupancyRateSheet.get(0).get(ltvRange);
+
+            }
+        }
 
 
+System.out.println("fico rate is " + ficoRate +"\ncashoutrate is " + cashoutRate + "\n propertytype rate is " +propertyTypeRate+"\noccupancyrate is " + occupancyRate);
 
-        double adjRate = ficoRate + cashoutRate+propertyTypeRate;
+        double adjRate = ficoRate + cashoutRate + propertyTypeRate + occupancyRate;
         return adjRate;
 //        return (List<T>) baseRateSheet;
     }
 
 
 
-    @Autowired
-    private CashOutAdjRepositories cashOutAdjRepositories;
-    @GetMapping("/cashout")
-    public List<CashOutAdj> showCashOutRate(){
-        return cashOutAdjRepositories.findAll();
-    }
-    @Autowired
-    private Cf15Repositories cf15Repositories;
-    @GetMapping("/cf15")
-    public List<Cf15> showCf15Rate(){
-        return cf15Repositories.findAll();
-    }
-    @Autowired
-    private Cf20Repositories cf20Repositories;
-    @GetMapping("/cf20")
-    public List<Cf20> showCf20Rate(){
-        return cf20Repositories.findAll();
-    }
-    @Autowired
-    private Cf30hbRepositories cf30hbRepositories;
-    @GetMapping("/cf30hb")
-    public List<Cf30hb> showCf30hbRate(){
-        return cf30hbRepositories.findAll();
-    }
-    @Autowired
-    private Cf30Repositories cf30Repositories;
-    @GetMapping("/cf30")
-    public List<Cf30> showCf30Rate(){
-        return cf30Repositories.findAll();
-    }
-    @Autowired
-    private FicoAdjRepositories ficoAdjRepositories;
-    @GetMapping("/fico")
-    public List<FicoAdj> showFicoAdjRate(){ return ficoAdjRepositories.findAll();}
-    @Autowired
-    private OccupancyAdjRepositories occupancyAdjRepositories;
-    @GetMapping("/occupancy")
-    public List<OccupancyAdj> showOccupancyAdjRate(){ return occupancyAdjRepositories.findAll();}
-    @Autowired
-    private PropertyTypeAdjRepositories propertyTypeAdjRepositories;
-    @GetMapping("/propertytype")
-    public List<PropertyTypeAdj> showPropertyTypeAdjRate(){ return propertyTypeAdjRepositories.findAll();}
+
 
 
 }
