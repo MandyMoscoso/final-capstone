@@ -21,4 +21,6 @@ public interface UserService {
 
     @Transactional
     void adminUpdateUserById(UserDto userDto, Long userId, String role);
+
+    List<String> staffAddNewAccount(UserDto newUser, String role);
 }

@@ -44,11 +44,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                           .loginPage("/login")//
   // if DaoAuthenticationProvider below return the valid authProvider, then redirect to default endpoint below. When loading the endpoint, I created dashboard controller to redirect user to the correct page based on their role.
                           .defaultSuccessUrl("/dashboard", true)
-                          .permitAll();
-//control how many people can log in at the same time. currently set up to 1.
-//                .and()
-//                .sessionManagement()
-//                .maximumSessions(1);
+                          .permitAll()
+
+
+//handle logout function. It doesn't have to be written down like this as Spring understand a post method to /logout is a log out call. I just leave it here to make it easier to understand
+                    .and()
+                            .logout()
+                            .logoutUrl("/logout");
+
+
     }
 
     //this method is called in order to authenticate a user, when a username and password is submitted, a UserdetailsService is called to find the password for that user to see if it is correct. It will also provide some other information about the user, such as the authorities. I used this to verify login info.

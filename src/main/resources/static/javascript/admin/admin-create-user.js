@@ -1,6 +1,7 @@
 
 const baseUrl = "http://localhost:8080";
 const csrfToken = document.getElementById("csrf")
+const logOutBtn = document.getElementById("log-out")
 const userInfoForm = document.getElementById("user-info-form")
 const borrowerInfoForm = document.getElementById("borrower-info-form")
 
@@ -69,3 +70,12 @@ const showStaffsForm = () =>{
         borrowerInfoForm.classList.add("d-none")
     }
 }
+const logOut = async() =>{
+    await fetch(`${baseUrl}/logout`, {
+        method: "POST",
+        headers: headers
+    })
+        .catch(err => console.error(err))
+        .then(window.location.reload())
+}
+logOutBtn.addEventListener("click", logOut)

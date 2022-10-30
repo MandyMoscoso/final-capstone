@@ -1,6 +1,8 @@
 
 const baseUrl = "http://localhost:8080";
 const csrfToken = document.getElementById("csrf")
+const logOutBtn = document.getElementById("log-out")
+
 const firstName = document.getElementById("firstname");
 const lastName = document.getElementById("lastname");
 const email = document.getElementById("username");
@@ -142,3 +144,12 @@ const handleSubmit = async () => {
 
 }
 
+const logOut = async() =>{
+    await fetch(`${baseUrl}/logout`, {
+        method: "POST",
+        headers: headers
+    })
+        .catch(err => console.error(err))
+        .then(window.location.reload())
+}
+logOutBtn.addEventListener("click", logOut)

@@ -27,8 +27,8 @@ const allUserTable = document.getElementById("all-user-table");
 
 
 const headers = {
-'Content-Type': 'application/json',
-"X-CSRF-Token": csrfToken.value
+    'Content-Type': 'application/json',
+    "X-CSRF-Token": csrfToken.value
 }
 
 const createUserCard = (obj) =>{
@@ -41,8 +41,19 @@ const createUserCard = (obj) =>{
         roles = roles.slice(0,-2);
         let userCard = document.createElement("tr");
         userCard.classList.add("m-2");
-        userCard.innerHTML = `
-             <td><input value=${obj.id} class = "form-check-input" type="checkbox" name = "selections" ></td>             
+        if(roles.includes("ADMIN")){
+            userCard.innerHTML = `
+                         
+             <td>${obj.firstname}</td>
+             <td>${obj.lastname}</td>
+             <td>${obj.username}</td>
+             <td>${obj.phonenumber}</td>
+             <td>${roles}</td> 
+             <td></td>            
+        `
+        } else{
+            userCard.innerHTML = `
+                         
              <td>${obj.firstname}</td>
              <td>${obj.lastname}</td>
              <td>${obj.username}</td>
@@ -51,6 +62,8 @@ const createUserCard = (obj) =>{
              <td class="text-center"> <button type="submit" class="btn btn-outline-secondary btn-sm" name="edit" value="true" onclick="editUser(${obj.id},'${roles}')">Edit</button>
 </td>
         `
+        }
+
         allUserTable.append(userCard);
     })
 }
@@ -59,43 +72,27 @@ const createUserCard = (obj) =>{
 
 //GET USER INFO PAGE
 const  getAllUserInfo = async() =>{
-    const response = await fetch(`${baseUrl}/admin/alluser`, {
+    const response = await fetch(`${baseUrl}/staff/alluser`, {
         method: "GET",
         headers: {
-                 'Content-Type': 'application/json',
-                 }
+            'Content-Type': 'application/json',
+        }
     })
-            .then(response => response.json())
-             .then(data =>{
-                createUserCard(data)
-              })
-             .catch(err => console.error(err))
+        .then(response => response.json())
+        .then(data =>{
+            createUserCard(data)
+        })
+        .catch(err => console.error(err))
 
 }
 //start the page with loading user info. should be commmented out when it is admin
 getAllUserInfo();
 
-const deleteUsers =async() =>{
-    let selections = "";
-    for (let i = 0; i <allUserTable.rows.length; i++){
-        if(allUserTable.rows.item(i).cells.item(0).firstElementChild.checked ){
-             selections+=(allUserTable.rows.item(i).cells.item(0).firstElementChild.value)+"-"
-        }
-    }
-    selections = selections.slice(0, -1);
-    await fetch(`${baseUrl}/admin/delete/${selections}`, {
-        method: "DELETE",
-        headers: headers
-    })
-        .catch(err => console.error(err))
-    getAllUserInfo()
-}
 
 const editUser = (id, role) =>{
     pageContent.innerHTML="";
     pageContent.innerHTML=`
-    <select id="role" class="form-select mb-2" aria-label="Choose role" onChange="showStaffsForm()">                
-                <option value="ROLE_ADMIN" >Admin</option>
+    <select id="role" class="form-select mb-2" aria-label="Choose role" onChange="showStaffsForm()">
                 <option value="ROLE_STAFF">Staff</option>
                 <option value="ROLE_USER">Borrower</option>
     </select>
@@ -260,7 +257,7 @@ const editUser = (id, role) =>{
     `
 
     const  getUserInfo = async() =>{
-        const response = await fetch(`${baseUrl}/admin/getuser/${id}`, {
+        const response = await fetch(`${baseUrl}/staff/getuser/${id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -318,7 +315,7 @@ const editUser = (id, role) =>{
         for(let i =0; i< roleSelection.length; i++){
             if( roleSelection[i].value=== "ROLE_" + role){
                 roleSelection[i].selected ="selected";
-             }
+            }
         }
     }());
 }
@@ -361,14 +358,14 @@ const submitEdit = async (id) => {
     }
     bodyObj = JSON.stringify(bodyObj)
     console.log(bodyObj,newRole.value)
-    await fetch(`${baseUrl}/admin/edituser/${newRole.value}`, {
+    await fetch(`${baseUrl}/staff/edituser/${newRole.value}`, {
         method: "PUT",
         body: bodyObj,
         headers: headers
     })
         .catch(err => console.error(err))
     password.innerHTML=''
-        // .then(window.location.reload())
+    // .then(window.location.reload())
 
 }
 // //to show form when role admin or staff is chosen

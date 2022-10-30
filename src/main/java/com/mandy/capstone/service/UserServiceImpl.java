@@ -96,4 +96,25 @@ public class UserServiceImpl implements UserService{
         userRepository.saveAndFlush(user);
     }
 
+    @Override
+    @Transactional
+    public List<String> staffAddNewAccount(UserDto newUser, String role) {
+        List<String> response = new ArrayList<>();
+        User user = new User(newUser);
+        Authorities authority = new Authorities();
+        if(role.equals("ROLE_STAFF")){
+            authority.setAuthority("ROLE_STAFF");
+        } else{
+            authority.setAuthority("ROLE_USER");
+        }
+
+        authority.setUser(user);
+        user.getAuthorities().add(authority);
+        user.getBorrower().setUser(user);
+        userRepository.saveAndFlush(user);
+        response.add("completed adding user");
+        System.out.println(response);
+        return response;
+    }
+
 }

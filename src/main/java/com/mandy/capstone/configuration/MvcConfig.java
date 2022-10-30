@@ -1,4 +1,4 @@
-package com.mandy.capstone.security;
+package com.mandy.capstone.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -11,6 +11,8 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/adminhome").setViewName("admindashboard");
         registry.addViewController("/adminnewuser").setViewName("admin-create-user");
+        registry.addViewController("/staffhome").setViewName("staffdashboard");
+        registry.addViewController("/staffnewuser").setViewName("staff-create-user");
         registry.addViewController("/userprofile").setViewName("userprofile");
         registry.addViewController("/register").setViewName("register");
         registry.addViewController("/login").setViewName("login");

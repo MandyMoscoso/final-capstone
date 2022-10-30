@@ -1,6 +1,8 @@
 
 const baseUrl = "http://localhost:8080";
 const csrfToken = document.getElementById("csrf")
+const logOutBtn = document.getElementById("log-out")
+
 const creditScore = document.getElementById("credit-score");
 const loanAmount = document.getElementById("loan-amount");
 const loanPurpose = document.getElementById("loan-purpose");
@@ -23,8 +25,8 @@ const  getUserInfo = async() =>{
     })
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
-            populateUser(data)
+            populateUser(data);
+            checkRate();
         })
         .catch(err => console.error(err))
 }
@@ -32,7 +34,6 @@ const  getUserInfo = async() =>{
 const populateUser = (obj) =>{
     creditScore.value=obj.borrowerDto.creditScore;
     loanAmount.value=obj.borrowerDto.loanAmount;
-    // const loanPurposeSelection = document.getElementById("loan-purpose");
     (function() {
         for(let i =0; i< loanPurpose.length; i++){
             if( loanPurpose[i].value=== obj.borrowerDto.loanPurpose){
@@ -73,7 +74,6 @@ const populateUser = (obj) =>{
 getUserInfo();
 
 const checkRate = async () =>{
-    console.log("checking rate")
     let bodyObj = {
         creditScore: creditScore.value,
         loanAmount: loanAmount.value,
@@ -85,7 +85,6 @@ const checkRate = async () =>{
         propertyValue: propertyValue.value,
     }
     bodyObj = JSON.stringify(bodyObj)
-    console.log(bodyObj)
     await fetch(`${baseUrl}/rate/getrate`, {
         method: "POST",
         body: bodyObj,
@@ -121,3 +120,12 @@ const createRateCard = (obj) =>{
         `
     rateBody.appendChild(rateCard);
 }
+const logOut = async() =>{
+    await fetch(`${baseUrl}/logout`, {
+        method: "POST",
+        headers: headers
+    })
+        .catch(err => console.error(err))
+        .then(window.location.reload())
+}
+logOutBtn.addEventListener("click", logOut)
