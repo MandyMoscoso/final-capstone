@@ -116,7 +116,7 @@ const createRateCard = (obj) =>{
             <td>${obj.day15}</td>
             <td>${obj.day30}</td>
             <td>${obj.day45}</td>
-            <td>$ ${monthlyPmt}</td>           
+            <td>$ ${monthlyPmt}.00</td>           
         `
     rateBody.appendChild(rateCard);
 }

@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title><!doctype html>
-      <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-      <head>
-      <meta charset="UTF-8">
-      <meta name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-      rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-      crossorigin="anonymous">
-      <link rel="stylesheet" th:href="@{/css/staff.css}">
-      <title>Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" th:href="@{/css/staff.css}">
+  <title>Home</title>
 </head>
 
 <body>
-<!--<span th:inline="text">Welcome this is admindashboard Admin [[${#httpServletRequest.remoteUser}]]</span>-->
 <input id="csrf" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <section style="background-color: #eee;">
   <div class="container py-5">
@@ -25,8 +17,8 @@
       <div class="col">
         <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="adminhome">Home</a></li>
-            <li class="breadcrumb-item"><a href="adminnewuser">Add User</a></li>
+            <li class="breadcrumb-item"><a href="staffhome">Home</a></li>
+            <li class="breadcrumb-item"><a href="staffnewuser">Add User</a></li>
             <li class=" breadcrumb-item" id="log-out" aria-current="page"><a href="#">Log Out</a></li>
           </ol>
         </nav>
@@ -41,7 +33,6 @@
 
               <select id="role" class="form-select" aria-label="Choose role" onChange="showStaffsForm()">
                 <option selected>Choose role</option>
-                <option value="ROLE_ADMIN" >Admin</option>
                 <option value="ROLE_STAFF">Staff</option>
                 <option value="ROLE_USER">Borrower</option>
               </select>
