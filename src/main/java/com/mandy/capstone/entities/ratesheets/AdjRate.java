@@ -1,10 +1,19 @@
 package com.mandy.capstone.entities.ratesheets;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+//@MappedSuperclass: The JPA standard specification defines the @MappedSuperclass annotation to allow an entity to inherit properties from a base class.
+@MappedSuperclass
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AdjRate {
-    private Integer fico;
+
     private double ltv60;
     private double ltv70;
     private double ltv75;

@@ -97,7 +97,7 @@ public class RateServiceImpl  implements RateService {
             }
         }
 
-// System.out.println("fico rate is " + ficoRate +"\ncashoutrate is " + cashoutRate + "\n propertytype rate is " +propertyTypeRate+"\noccupancyrate is " + occupancyRate);
+ System.out.println("fico rate is " + ficoRate +"\ncashoutrate is " + cashoutRate + "\n propertytype rate is " +propertyTypeRate+"\noccupancyrate is " + occupancyRate);
         double adjRate = ficoRate + cashoutRate + propertyTypeRate + occupancyRate;
 
 

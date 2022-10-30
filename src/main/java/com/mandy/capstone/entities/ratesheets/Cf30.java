@@ -6,15 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+//This class extends Baserate class and Baserate has all lombok annotation, so no need for @Data... here
 @Entity
 @Table(name = "cf30")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Cf30 extends BaseRate{
-    @Id
-    private double rate;
-    private double day15;
-    private double day30;
-    private double day45;
 }
