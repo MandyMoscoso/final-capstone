@@ -1,61 +1,87 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
-    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"-->
-<!--          rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"-->
-<!--          crossorigin="anonymous">-->
-        <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <title>Admin Dashboard</title>
 
-    <title>Home</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+
 </head>
-
 <body>
+<nav class="navbar navbar-dark sticky-top bg-danger flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 m-2" href="#">Big Pocket Mortgage</a>
 
-<section style="background-color: #eee;">
-    <div class="container py-5">
-        <div class="row">
-            <div class="col">
-                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-2">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="adminhome">Home</a></li>
-                        <li class="breadcrumb-item"><a href="adminnewuser">Add User</a></li>
-                        <li class=" breadcrumb-item" id="log-out" aria-current="page"><a href="#">Log Out</a></li>
-                    </ol>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" id="log-out" href="#">Sign out</a>
+        </li>
+    </ul>
+</nav>
 
-                </nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar py-2">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column ">
+                    <li class="nav-item">
+                        <a class="nav-link active my-3" href="adminhome">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminnewuser">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            Add Users
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+            <h2>Admin Dashboard</h2>
+            <div id="home-content" class ="col-md-8 col-sm-10 mt-5 my-5 ">
+                <input class="form-control mb-2 input-group-sm col-sm-3" id="myInput" type="text" placeholder="Search..">
+                <table class="table table-striped table-bordered table-sm">
+                    <thead class="bg-danger bg-gradient text-light" >
+                    <tr>
+                        <th scope="col">Select</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="all-user-table" >
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-danger mb-5 btn-sm" name="delete" value="true" onclick="deleteUsers()">Delete</button>
+            </div>
+        </main>
     </div>
-</section>
-
-        <div id="home-content" class ="col-md-8 col-sm-10 mx-auto mt-5 my-5 ">
-            <input class="form-control mb-2 input-group-sm col-sm-3" id="myInput" type="text" placeholder="Search..">
-            <table class="table table-striped table-bordered table-sm">
-                <thead class="bg-user-table bg-gradient " >
-                <tr>
-                    <th scope="col">Select</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody id="all-user-table" >
-                </tbody>
-            </table>
-            <button type="submit" class="btn btn-danger mb-5 btn-sm" name="delete" value="true" onclick="deleteUsers()">Delete</button>
-        </div>
-
+</div>
 <input id="csrf" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/javascript/admin/admin.js}" type="application/javascript"></script>-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 <script>
     $(document).ready(function(){
         $("#myInput").on("keyup", function() {
@@ -66,11 +92,5 @@
         });
     });
 </script>
-
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"-->
-<!--        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"-->
-<!--        crossorigin="anonymous"></script>-->
-<script th:src="@{/javascript/admin/admin.js}" type="application/javascript"></script>
-
 </body>
 </html>
