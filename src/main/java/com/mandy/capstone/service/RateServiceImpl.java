@@ -87,7 +87,7 @@ public class RateServiceImpl  implements RateService {
 
 //occupancy is not owner occupied, they are 2nd home or investment, and it will have an adjustment rate
         double occupancyRate = 0;
-        if(obj.getOccupancyType()!="owner-occupied"){
+        if(!obj.getOccupancyType().equalsIgnoreCase("owner-occupied")){
             List<OccupancyAdj> occupancyRateSheet = occupancyAdjRepositories.findAllByOrderByOccupancyAsc();
 
             if(obj.getOccupancyType().equalsIgnoreCase("Second Home")){

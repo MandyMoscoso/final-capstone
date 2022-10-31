@@ -1,13 +1,19 @@
 $enable-gradients: true;
 @import "../bootstrap/scss/bootstrap";
 
-
 .bg-user{
-  background-color: #2962ff;
+  background-color: #36bea6;
+
 }
 
 .sidebar-sticky {
-
   height: 100vh;
+}
 
+.text-right{
+  text-align: right;
+}
+
+input:invalid {
+  border: solid red 3px;
 }

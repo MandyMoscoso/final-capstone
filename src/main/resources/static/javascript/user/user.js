@@ -111,6 +111,7 @@ const createRateCard = (obj) =>{
     console.log("loan amount: " + p + "loan interest: " + r + "loan term: " + n)
     let monthlyPmt =Math.round(p * r * ((r +1)**n) / ((1+r)**n -1)) ;
     let rateCard = document.createElement("tr");
+    rateCard.classList.add("text-right")
     rateCard.innerHTML =`
             <td>${obj.rate}%</td>
             <td>${obj.day15}</td>
