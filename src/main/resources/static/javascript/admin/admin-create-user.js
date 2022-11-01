@@ -4,6 +4,7 @@ const csrfToken = document.getElementById("csrf")
 const logOutBtn = document.getElementById("log-out")
 const userInfoForm = document.getElementById("user-info-form")
 const borrowerInfoForm = document.getElementById("borrower-info-form")
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 
 
 const firstName = document.getElementById("firstname");
@@ -58,7 +59,15 @@ const addUser = async () => {
                   headers: headers
               })
                   .catch(err => console.error(err))
-        .then(window.location.reload())
+        .then(data => {
+            clearForm();
+            alert('User added succesfully', 'success');
+
+        }
+
+
+
+)
 
 }
 
@@ -69,6 +78,29 @@ const showStaffsForm = () =>{
     } else{
         borrowerInfoForm.classList.add("d-none")
     }
+}
+const alert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    alertPlaceholder.append(wrapper)
+}
+
+const clearForm = () => {
+    firstName.value = "";
+    lastName.value = "";
+    email.value ="";
+    phone.value = "";
+    password.value="";
+    address.value ="";
+    creditScore.value="";
+    loanAmount.value="";
+    propertyValue.value="";
 }
 const logOut = async() =>{
     await fetch(`${baseUrl}/logout`, {

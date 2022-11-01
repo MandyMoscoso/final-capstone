@@ -114,11 +114,11 @@ public class RateServiceImpl  implements RateService {
         List<BaseRate> copyRateSheet=new ArrayList<>();
         for (int i = 0; i < baseRateSheet.size(); i++) {
              BaseRate newObj = new BaseRate();
+            newObj.setRate(baseRateSheet.get(i).getRate());
+            newObj.setDay15(Math.round((baseRateSheet.get(i).getDay15()+adjRate)*100)/100D );
+            newObj.setDay30( Math.round((baseRateSheet.get(i).getDay30()+adjRate)*100)/100D);
+            newObj.setDay45(Math.round((baseRateSheet.get(i).getDay45()+adjRate)*100)/100D);
             copyRateSheet.add(newObj);
-            copyRateSheet.get(i).setRate(baseRateSheet.get(i).getRate());
-            copyRateSheet.get(i).setDay15(Math.round((baseRateSheet.get(i).getDay15()+adjRate)*100)/100D );
-            copyRateSheet.get(i).setDay30( Math.round((baseRateSheet.get(i).getDay30()+adjRate)*100)/100D);
-            copyRateSheet.get(i).setDay45(Math.round((baseRateSheet.get(i).getDay45()+adjRate)*100)/100D);
         }
         System.out.println(copyRateSheet);
         return (List<?>) copyRateSheet;
