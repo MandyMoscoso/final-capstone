@@ -20,7 +20,7 @@ public interface UserService {
     void updateUserById(UserDto updateUser);
 
     @Transactional
-    void adminUpdateUserById(UserDto userDto, Long userId, String role);
+    List<String> adminUpdateUserById(UserDto userDto, Long userId, String role);
 
     List<String> staffAddNewAccount(UserDto newUser, String role);
 }

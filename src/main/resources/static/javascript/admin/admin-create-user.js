@@ -53,21 +53,17 @@ const addUser = async () => {
     }
     bodyObj = JSON.stringify(bodyObj)
     console.log(bodyObj)
-    await fetch(`${baseUrl}/admin/createuser/${role.value}`, {
+    const response =  await fetch(`${baseUrl}/admin/createuser/${role.value}`, {
                   method: "POST",
                   body: bodyObj,
                   headers: headers
               })
                   .catch(err => console.error(err))
-        .then(data => {
-            clearForm();
-            alert('User added succesfully', 'success');
-
-        }
-
-
-
-)
+    if (response.status === 200){
+        const responseArr = await response.json()
+        clearForm();
+        alert(responseArr[0], responseArr[1]);
+    }
 
 }
 
@@ -79,6 +75,7 @@ const showStaffsForm = () =>{
         borrowerInfoForm.classList.add("d-none")
     }
 }
+
 const alert = (message, type) => {
     const wrapper = document.createElement('div')
     wrapper.innerHTML = [
@@ -97,10 +94,10 @@ const clearForm = () => {
     email.value ="";
     phone.value = "";
     password.value="";
-    address.value ="";
-    creditScore.value="";
-    loanAmount.value="";
-    propertyValue.value="";
+    if(address)  address.value ="";
+    if(creditScore) creditScore.value="";
+    if(loanAmount) loanAmount.value="";
+    if(propertyValue) propertyValue.value="";
 }
 const logOut = async() =>{
     await fetch(`${baseUrl}/logout`, {

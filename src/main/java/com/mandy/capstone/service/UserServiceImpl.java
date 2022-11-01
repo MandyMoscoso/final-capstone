@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService{
         user.getAuthorities().add(authority);
         user.getBorrower().setUser(user);
         userRepository.saveAndFlush(user);
-        response.add("completed adding user");
-        System.out.println(response);
+        response.add("User added successfully");
+        response.add("success");
         return response;
     }
 
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void adminUpdateUserById(UserDto updateUser, Long userId, String role) {
+    public  List<String> adminUpdateUserById(UserDto updateUser, Long userId, String role) {
         User user = new User(updateUser);
         Authorities authorities = (Authorities) userRepository.findUserById(userId).getAuthorities().toArray()[0];
         authorities.setAuthority(role);
@@ -94,6 +94,10 @@ public class UserServiceImpl implements UserService{
             borrower.setUser(user);
         }
         userRepository.saveAndFlush(user);
+        List<String> response = new ArrayList<>();
+        response.add("User edited successfully");
+        response.add("success");
+        return response;
     }
 
     @Override

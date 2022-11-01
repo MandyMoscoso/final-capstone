@@ -2,10 +2,8 @@
 const baseUrl = "http://localhost:8080";
 const csrfToken = document.getElementById("csrf")
 const logOutBtn = document.getElementById("log-out")
-// const userId = document.getElementById("userid").value
-// const userInfoForm = document.getElementById("user-info-form")
-// const borrowerInfoForm = document.getElementById("borrower-info-form")
 const pageContent = document.getElementById("home-content")
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 
 
 const role = document.getElementById("role");
@@ -83,11 +81,15 @@ const deleteUsers =async() =>{
         }
     }
     selections = selections.slice(0, -1);
-    await fetch(`${baseUrl}/admin/delete/${selections}`, {
+    const response = await fetch(`${baseUrl}/admin/delete/${selections}`, {
         method: "DELETE",
         headers: headers
     })
         .catch(err => console.error(err))
+    if (response.status === 200){
+        const responseArr = await response.json()
+        alert(responseArr[0], responseArr[1]);
+    }
     getAllUserInfo()
 }
 
@@ -361,15 +363,17 @@ const submitEdit = async (id) => {
     }
     bodyObj = JSON.stringify(bodyObj)
     console.log(bodyObj,newRole.value)
-    await fetch(`${baseUrl}/admin/edituser/${newRole.value}`, {
+    const response =  await fetch(`${baseUrl}/admin/edituser/${newRole.value}`, {
         method: "PUT",
         body: bodyObj,
         headers: headers
     })
         .catch(err => console.error(err))
     password.innerHTML=''
-        // .then(window.location.reload())
-
+    if (response.status === 200){
+        const responseArr = await response.json()
+        alert(responseArr[0], responseArr[1]);
+    }
 }
 // //to show form when role admin or staff is chosen
 
@@ -383,6 +387,19 @@ const showStaffsForm = () =>{
     } else{
         borrowerInfoForm.classList.add("d-none")
     }
+}
+
+
+const alert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    alertPlaceholder.append(wrapper)
 }
 
 const logOut = async() =>{

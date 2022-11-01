@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Long.parseLong;
 
-@Controller
+@RestController
 @RequestMapping
 public class AdminController {
     @Autowired
@@ -33,7 +33,6 @@ public class AdminController {
     private UserRepository userRepository;
 
     @PostMapping("/admin/createuser/{role}")
-    @ResponseBody
     //@Responsebody:  annotation can be put on a method and indicates that the return type should be written straight to the HTTP response body (and not placed in a Model, or interpreted as a view name).
     //need it here because I used @Controller vs @RestController
 //    @ResponseBody
@@ -45,13 +44,11 @@ public class AdminController {
     }
 
       @GetMapping("admin/alluser")
-      @ResponseBody
     public List <User> showAllUser(){
         return  userRepository.findAll();
     }
 
     @GetMapping("/admin/getuser/{userId}")
-    @ResponseBody
     public UserDto getUser(@PathVariable Long userId){
         UserDto userDto = userService.getUserByUserId(userId) ;
         userDto.setAuthoritiesDto(null);
@@ -59,19 +56,22 @@ public class AdminController {
         return userDto;
     }
     @DeleteMapping("admin/delete/{ids}")
-    public String deleteUsers (@PathVariable String ids){
+    public List<String> deleteUsers (@PathVariable String ids){
         System.out.println(ids);
         List<Long> longIds = Arrays
                 .stream(ids.split("-"))
                 .map(Long::parseLong)
                 .collect(Collectors.toList());
         userRepository.deleteAllById(longIds);
-        return "dashboard";
+        List<String> response = new ArrayList<>();
+        response.add("User(s) deleted successfully");
+        response.add("warning");
+        return response;
     }
 
     @PutMapping("/admin/edituser/{role}")
     @ResponseBody
-    public void editUser(@RequestBody UserDto userDto, @PathVariable String role){
+    public List<String> editUser(@RequestBody UserDto userDto, @PathVariable String role){
         Long userId = userDto.getId();
         UserDto savedUser = new UserDto(userRepository.findById(userId).get());
         //this if statement is needed to avoid user role being switched from borrower to staff/admin and vise versa. if the new role is staffs roles, it may cause db to create a duplicate borrower on borrowers table due to the borrowerdto being null. so if that the case, I will assign the saved borrower on db to the userDto obj.
@@ -87,7 +87,7 @@ public class AdminController {
             String passHash = passwordEncoder.encode(userDto.getPassword());
             userDto.setPassword(passHash);
         }
-        userService.adminUpdateUserById(userDto,userId, role);
+        return userService.adminUpdateUserById(userDto,userId, role);
 
     }
 
