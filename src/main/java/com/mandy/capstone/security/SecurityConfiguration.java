@@ -27,18 +27,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //csrf with any method that can make changes like post, put, delete, patch. This line can be replaced with inline csrf in the html file for that method.
-//                .csrf().disable()
-                //antMatchers("/admin/**") admin and any sub need the specific role
                 .authorizeRequests()
-                //turn off for testing need to turnon when done
                     .antMatchers("/admin**/**").hasAnyRole("ADMIN")
                     .antMatchers("/staff**/**").hasAnyRole("STAFF","ADMIN")
                     .antMatchers("/register**").permitAll()
                     .antMatchers(HttpMethod.GET, "/css/**", "/javascript/**").permitAll()
-                //turn off for testing. need to turn on when done
-                    .anyRequest().hasAnyRole("USER","ADMIN","STAFF")
-//                      .anyRequest().permitAll()
+                    .anyRequest().hasAnyRole("USER","ADMIN","STAFF")//
                     .and()
                         .formLogin()
                           .loginPage("/login")//

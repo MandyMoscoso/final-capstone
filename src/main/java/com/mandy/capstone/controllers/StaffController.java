@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,6 @@ public class StaffController {
     public List<String> addAcount(@RequestBody UserDto newUser, @PathVariable String role){
         String passHash = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(passHash);
-        System.out.println(role);
         return userService.staffAddNewAccount(newUser, role);
     }
 
@@ -52,12 +52,15 @@ public class StaffController {
 
     @PutMapping("/edituser/{role}")
     @ResponseBody
-    public void editUser(@RequestBody UserDto userDto, @PathVariable String role){
+    public List<String>  editUser(@RequestBody UserDto userDto, @PathVariable String role){
+        List<String> response =new ArrayList<>();
         Long userId = userDto.getId();
         UserDto savedUser = new UserDto(userRepository.findById(userId).get());
         //this if is to prevent a staff to create admin role or edit an admin profile
         if(savedUser.getAuthoritiesDto().toString().contains("authority=ROLE_ADMIN") || role.equalsIgnoreCase("ROLE_ADMIN")){
-            return;
+            response.add("Staff does not have admin authorization");
+            response.add("danger");
+            return response;
         }
         //this if statement is needed to avoid user role being switched from borrower to staff/admin and vise versa. if the new role is staffs roles, it may cause db to create a duplicate borrower on borrowers table due to the borrowerdto being null. so if that the case, I will assign the saved borrower on db to the userDto obj.
         if(userDto.getBorrowerDto()!=null){
@@ -72,7 +75,7 @@ public class StaffController {
             String passHash = passwordEncoder.encode(userDto.getPassword());
             userDto.setPassword(passHash);
         }
-        userService.adminUpdateUserById(userDto,userId, role);
+        return userService.updateUserById(userDto);
 
     }
 

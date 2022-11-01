@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -25,11 +26,24 @@ public class UserServiceImpl implements UserService{
     //any time you are saving something to the database you should include the @Transactional annotation which ensures that the transaction that gets opened with your datasource gets resolved
     //this method is to add user
 
-
+    @Override
+    @Transactional
+    public UserDto getUserByUserId(Long userId) {
+        UserDto userDto = new UserDto(userRepository.findUserById(userId));
+        return userDto;
+    }
+    //new user method for user who sign up from registration form
     @Override
     @Transactional
     public List<String> addUser(UserDto newUser) {
         List<String> response = new ArrayList<>();
+        //validate that the email/username is available
+        Optional<User> usernameCheck = userRepository.findByUsername(newUser.getUsername());
+        if(usernameCheck.isPresent()){
+            response.add("Email is already in use");
+            response.add("danger");
+            return response;
+        };
         User user = new User(newUser);
         //add role to authority obj and then add this obj to user so Jpa will save to users and authorities table in 1 run.
         Authorities authority = new Authorities("ROLE_USER");
@@ -40,14 +54,24 @@ public class UserServiceImpl implements UserService{
         Borrower borrower = new Borrower();
         borrower.setUser(user);
         userRepository.saveAndFlush(user);
-        response.add("login");
-        System.out.println(response);
+        response.add("User account created successfully");
+        response.add("success");
         return response;
     }
+
+    //new user method for users created by admin. This is the only method that can create admin role and only accessible by ADMIN.
     @Override
     @Transactional
-    public List<String> addNewAccount(UserDto newUser, String role) {
+    public List<String> adminAddNewAccount(UserDto newUser, String role) {
         List<String> response = new ArrayList<>();
+        //validate that the email/username is available
+        Optional<User> usernameCheck = userRepository.findByUsername(newUser.getUsername());
+        if(usernameCheck.isPresent()){
+          response.add("Email is already in use");
+          response.add("danger");
+          return response;
+        };
+
         User user = new User(newUser);
         Authorities authority = new Authorities(role);
         authority.setUser(user);
@@ -58,32 +82,8 @@ public class UserServiceImpl implements UserService{
         response.add("success");
         return response;
     }
-
     @Override
     @Transactional
-    public UserDto getUserByUserId(Long userId) {
-        UserDto userDto = new UserDto(userRepository.findUserById(userId));
-        return userDto;
-    }
-
-    @Override
-    @Transactional
-    public List<String> testing() {
-        List<String> response = new ArrayList<>();
-        response.add("login");
-        return response;
-    }
-
-    @Override
-    @Transactional
-    public void updateUserById(UserDto updateUser) {
-        User user = new User(updateUser);
-        Borrower borrower = user.getBorrower();
-        borrower.setUser(user);
-        userRepository.saveAndFlush(user);
-    }
-
-    @Override
     public  List<String> adminUpdateUserById(UserDto updateUser, Long userId, String role) {
         User user = new User(updateUser);
         Authorities authorities = (Authorities) userRepository.findUserById(userId).getAuthorities().toArray()[0];
@@ -100,24 +100,52 @@ public class UserServiceImpl implements UserService{
         return response;
     }
 
+
+    //if the request to update user info from borrower or staff role passed all validation, then this method will be called.
+    @Override
+    @Transactional
+    public List<String> updateUserById(UserDto updateUser) {
+        User user = new User(updateUser);
+        Borrower borrower = user.getBorrower();
+        borrower.setUser(user);
+        userRepository.saveAndFlush(user);
+        List<String> response =new ArrayList<>();
+        response.add("User edited successfully");
+        response.add("success");
+        return response;
+    }
+
+    //this is the method to create new user by staff. this method cannot create admin role.
     @Override
     @Transactional
     public List<String> staffAddNewAccount(UserDto newUser, String role) {
         List<String> response = new ArrayList<>();
+        //validate that the email/username is available
+        Optional<User> usernameCheck = userRepository.findByUsername(newUser.getUsername());
+        if(usernameCheck.isPresent()){
+            response.add("Email is already in use");
+            response.add("danger");
+            return response;
+        };
         User user = new User(newUser);
         Authorities authority = new Authorities();
-        if(role.equals("ROLE_STAFF")){
+        if(role.equalsIgnoreCase("ROLE_STAFF")){
             authority.setAuthority("ROLE_STAFF");
-        } else{
+        } else if (role.equalsIgnoreCase("ROLE_USER")){
             authority.setAuthority("ROLE_USER");
         }
-
+        //if the role passed in from request is not staff or user then return this danger alert and no user should be created.
+        else{
+            response.add("Cannot create user. Please check your info");
+            response.add("danger");
+            return response;
+        }
         authority.setUser(user);
         user.getAuthorities().add(authority);
         user.getBorrower().setUser(user);
         userRepository.saveAndFlush(user);
-        response.add("completed adding user");
-        System.out.println(response);
+        response.add("New user created");
+        response.add("success");
         return response;
     }
 

@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //            " where u.username = :username" )
 //select * from user where username = :username (that we passing in)
 //because we named our method findByUsername, Spring is smart enough to extract username from User that passed in.
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     Optional<User> findById(Long userId);
 

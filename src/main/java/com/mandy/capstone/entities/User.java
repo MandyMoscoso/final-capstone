@@ -29,7 +29,7 @@ public class User {
     private String lastname;
     private String phonenumber;
 
-    //Because we used @Data annotation. That annocation creates equals and hashcode implementations that include checking the content of the OneToMany collections. This interferes with Hibernate's loading strategy, or something like that. Adding @EqualsAndHashCode.Exclude and @ToString.Exclude will prevent that the OneToMany collections get accessed too early
+    //Because we used @Data annotation. That annotation creates equals and hashcode implementations that include checking the content of the OneToMany collections. This interferes with Hibernate's loading strategy, or something like that. Adding @EqualsAndHashCode.Exclude and @ToString.Exclude will prevent that the OneToMany collections get accessed too early
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     //FetchType: there are EAGER and LAZY. LAZY will not pull the authority. EAGER will. but this is less effective but easier to use. We have to use LAZY in this case to get Authority othrewise log in function will have issue.

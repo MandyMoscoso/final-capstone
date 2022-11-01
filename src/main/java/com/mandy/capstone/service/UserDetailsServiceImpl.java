@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     //to make use of userrepository interface which extend Jparepository and all the database method
@@ -20,10 +22,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     //when returning a User object, we need to make our User class compatible with UserDetails. the easiest way is make User implements UserDetails. this is ok but it ties our User objects to Spring security framework, requires our User object to implement all methods in UserDetails like getAuthorities... which we may not need. And it make it harder when we want to switch our security to something else beside spring security. So we can work around by making a CustomSecurityUser that extends User and implements UserDetails. This new call will act like User class, but added spring security framework.
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-       User user = userRepo.findByUsername(username);
-       if(user == null)
-           throw new UsernameNotFoundException("Username or password is incorrect");
-       //CustomSecurityUser implements UserDetails so it satisfy the requirement for return value.
-        return new CustomSecurityUser(user);
+       Optional<User> userOptional = userRepo.findByUsername(username);
+        if(!userOptional.isPresent()){
+            throw new UsernameNotFoundException("Username or password is incorrect");
+        }
+        //CustomSecurityUser implements UserDetails so it satisfy the requirement for return value.
+        return new CustomSecurityUser(userOptional.get());
     }
 }

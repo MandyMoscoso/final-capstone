@@ -25,6 +25,7 @@ public class LoginRegisterController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
+    @ResponseBody
     public List<String> addUser(@RequestBody UserDto newUser){
         String passHash = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(passHash);

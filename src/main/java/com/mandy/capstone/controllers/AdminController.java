@@ -40,7 +40,7 @@ public class AdminController {
         String passHash = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(passHash);
         System.out.println(role);
-        return userService.addNewAccount(newUser, role);
+        return userService.adminAddNewAccount(newUser, role);
     }
 
       @GetMapping("admin/alluser")
@@ -74,7 +74,7 @@ public class AdminController {
     public List<String> editUser(@RequestBody UserDto userDto, @PathVariable String role){
         Long userId = userDto.getId();
         UserDto savedUser = new UserDto(userRepository.findById(userId).get());
-        //this if statement is needed to avoid user role being switched from borrower to staff/admin and vise versa. if the new role is staffs roles, it may cause db to create a duplicate borrower on borrowers table due to the borrowerdto being null. so if that the case, I will assign the saved borrower on db to the userDto obj.
+        //this if statement is needed to avoid user role being switched from borrower to staff/admin and vise versa. if the new role is non-borrower roles, it may cause db to create a duplicate borrower on borrowers table due to the borrowerdto being null. so if that the case, I will assign the saved borrower on db to the userDto obj.
         if(userDto.getBorrowerDto()!=null){
             userDto.getBorrowerDto().setBorrower_id(savedUser.getBorrowerDto().getBorrower_id());
         }else {

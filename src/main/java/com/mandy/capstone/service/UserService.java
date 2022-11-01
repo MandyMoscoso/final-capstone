@@ -9,18 +9,15 @@ public interface UserService {
     @Transactional
     List<String> addUser(UserDto newUser);
     @Transactional
-    public List<String> addNewAccount(UserDto newUser, String role) ;
-    @Transactional
     UserDto getUserByUserId(Long userId);
 
     @Transactional
-    List<String> testing();
-
-    @Transactional
-    void updateUserById(UserDto updateUser);
+    List<String> updateUserById(UserDto updateUser);
 
     @Transactional
     List<String> adminUpdateUserById(UserDto userDto, Long userId, String role);
-
+    @Transactional
     List<String> staffAddNewAccount(UserDto newUser, String role);
+    @Transactional
+    List<String> adminAddNewAccount(UserDto newUser, String role);
 }

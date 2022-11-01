@@ -99,6 +99,7 @@ const clearForm = () => {
     if(loanAmount) loanAmount.value="";
     if(propertyValue) propertyValue.value="";
 }
+
 const logOut = async() =>{
     await fetch(`${baseUrl}/logout`, {
         method: "POST",

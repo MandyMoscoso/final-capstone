@@ -40,7 +40,7 @@ const createUserCard = (obj) =>{
         let userCard = document.createElement("tr");
         userCard.classList.add("m-2");
         userCard.innerHTML = `
-             <td><input value=${obj.id} class = "form-check-input" type="checkbox" name = "selections" ></td>             
+             <td class="text-center"><input value=${obj.id} class = "form-check-input " type="checkbox" name = "selections" ></td>             
              <td>${obj.firstname}</td>
              <td>${obj.lastname}</td>
              <td>${obj.username}</td>

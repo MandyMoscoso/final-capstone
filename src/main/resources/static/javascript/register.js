@@ -4,6 +4,7 @@ const registerPassword = document.getElementById('password')
 const registerFirstname = document.getElementById('firstname')
 const registerLastname = document.getElementById('lastname')
 const registerPhonenumber = document.getElementById('phonenumber')
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const csrfToken = document.getElementById("csrf")
 const headers = {
 'Content-Type': 'application/json',
@@ -28,10 +29,19 @@ const handleSubmit = async (e) => {
         headers: headers
     })
         .catch(err => console.error(err.message))
-    const responseArr = await response.text()
-    if(response.status === 200){
-    window.location.replace(responseArr[0])
+    if (response.status === 200){
+        const responseArr = await response.json()
+        alert(responseArr[0], responseArr[1]);
     }
 }
+const alert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML =
+        `<div class="alert alert-${type} alert-dismissible" role="alert">
+        <div>${message}</div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`
 
+    alertPlaceholder.appendChild(wrapper)
+}
 registerForm.addEventListener("submit", handleSubmit)
