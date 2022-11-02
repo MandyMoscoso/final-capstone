@@ -2,7 +2,7 @@
 const baseUrl = "http://localhost:8080";
 const csrfToken = document.getElementById("csrf")
 const logOutBtn = document.getElementById("log-out")
-
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const creditScore = document.getElementById("credit-score");
 const loanAmount = document.getElementById("loan-amount");
 const loanPurpose = document.getElementById("loan-purpose");
@@ -93,16 +93,15 @@ const checkRate = async () =>{
         .catch(err => console.error(err))
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
             rateBody.innerHTML="";
-            for (let i = 0; i < data.length; i++) {
-                createRateCard(data[i]);
+            if(data[0]==="false"){
+                alert(data[1],data[2]);
+            }else{
+                for (let i = 0; i < data.length; i++) {
+                    createRateCard(data[i]);
+                }
             }
         })
-
-
-
-
 }
 const createRateCard = (obj) =>{
     let n = loanTerm.value *12;
@@ -121,6 +120,20 @@ const createRateCard = (obj) =>{
         `
     rateBody.appendChild(rateCard);
 }
+
+const alert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    alertPlaceholder.append(wrapper)
+}
+
+
 const logOut = async() =>{
     await fetch(`${baseUrl}/logout`, {
         method: "POST",

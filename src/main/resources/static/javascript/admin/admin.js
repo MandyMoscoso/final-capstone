@@ -4,8 +4,6 @@ const csrfToken = document.getElementById("csrf")
 const logOutBtn = document.getElementById("log-out")
 const pageContent = document.getElementById("home-content")
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-
-
 const role = document.getElementById("role");
 const firstName = document.getElementById("firstname");
 const lastName = document.getElementById("lastname");

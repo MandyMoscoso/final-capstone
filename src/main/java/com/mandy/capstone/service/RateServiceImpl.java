@@ -1,19 +1,13 @@
 package com.mandy.capstone.service;
-
 import com.mandy.capstone.entities.Borrower;
 import com.mandy.capstone.entities.ratesheets.*;
 import com.mandy.capstone.repositories.ratesheetsrepo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.SerializationUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+
 
 @Service
 public class RateServiceImpl  implements RateService {
@@ -31,10 +25,19 @@ public class RateServiceImpl  implements RateService {
     private OccupancyAdjRepositories occupancyAdjRepositories;
     @Autowired
     private PropertyTypeAdjRepositories propertyTypeAdjRepositories;
+    @Autowired
+    private ValidationService validationService;
 
     @Override
     @Transactional
     public  List<?> rates(Borrower obj){
+        List<String> validation = validationService.rateFieldCheck(obj);
+        if(validation.get(0).equalsIgnoreCase("false")){
+            return validation;
+        }
+
+        //if all fields are valid, then do the math
+
         double ltv = obj.getLoanAmount()/obj.getPropertyValue() * 100;
         String ltvRange = "";
         //return the column name based on ltv. I created a special getter that take a string and return the column based on that string value. Have to do it this way because Lombok generated getter has the column name in the method name instead of a variable.
@@ -121,7 +124,7 @@ public class RateServiceImpl  implements RateService {
             copyRateSheet.add(newObj);
         }
         System.out.println(copyRateSheet);
-        return (List<?>) copyRateSheet;
+        return copyRateSheet;
     }
 
 }
