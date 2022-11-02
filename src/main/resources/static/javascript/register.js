@@ -31,10 +31,19 @@ const handleSubmit = async (e) => {
         .catch(err => console.error(err.message))
     if (response.status === 200){
         const responseArr = await response.json()
-        alert(responseArr[0], responseArr[1]);
+        alert(responseArr[responseArr.length -2], responseArr[responseArr.length -1]);
+        if(responseArr[responseArr.length -1]==="success"){
+            registerFirstname.value = "";
+            registerLastname.value = "";
+            registerUsername.value ="";
+            registerPhonenumber.value = "";
+            registerPassword.value="";
+        }
     }
+
 }
 const alert = (message, type) => {
+    alertPlaceholder.innerHTML="";
     const wrapper = document.createElement('div')
     wrapper.innerHTML =
         `<div class="alert alert-${type} alert-dismissible" role="alert">

@@ -21,6 +21,8 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     @Autowired
     private BorrowerRepositories borrowerRepository;
+    @Autowired
+    private ValidationService validationService;
 
 
     //any time you are saving something to the database you should include the @Transactional annotation which ensures that the transaction that gets opened with your datasource gets resolved
@@ -36,14 +38,14 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public List<String> addUser(UserDto newUser) {
+
+        //validate that the required fields are not blank and email is not in use
+        List<String> validation = validationService.newAccountGeneralCheck(newUser);
+        if(validation.get(0).equalsIgnoreCase("false")){
+            return validation;
+        }
         List<String> response = new ArrayList<>();
-        //validate that the email/username is available
-        Optional<User> usernameCheck = userRepository.findByUsername(newUser.getUsername());
-        if(usernameCheck.isPresent()){
-            response.add("Email is already in use");
-            response.add("danger");
-            return response;
-        };
+
         User user = new User(newUser);
         //add role to authority obj and then add this obj to user so Jpa will save to users and authorities table in 1 run.
         Authorities authority = new Authorities("ROLE_USER");
@@ -63,15 +65,13 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public List<String> adminAddNewAccount(UserDto newUser, String role) {
-        List<String> response = new ArrayList<>();
-        //validate that the email/username is available
-        Optional<User> usernameCheck = userRepository.findByUsername(newUser.getUsername());
-        if(usernameCheck.isPresent()){
-          response.add("Email is already in use");
-          response.add("danger");
-          return response;
-        };
+        //validate that the required fields are not blank and email is not in use
+        List<String> validation = validationService.newAccountGeneralCheck(newUser);
+        if(validation.get(0).equalsIgnoreCase("false")){
+            return validation;
+        }
 
+        List<String> response = new ArrayList<>();
         User user = new User(newUser);
         Authorities authority = new Authorities(role);
         authority.setUser(user);
@@ -85,8 +85,16 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public  List<String> adminUpdateUserById(UserDto updateUser, Long userId, String role) {
+
+        //validate that the required fields are not blank and email is not in use
+        List<String> validation = validationService.updateAccountGeneralCheck(updateUser);
+        if(validation.get(0).equalsIgnoreCase("false")){
+            return validation;
+        }
+
+        User savedUser = userRepository.findUserById(userId);
         User user = new User(updateUser);
-        Authorities authorities = (Authorities) userRepository.findUserById(userId).getAuthorities().toArray()[0];
+        Authorities authorities = (Authorities) savedUser.getAuthorities().toArray()[0];
         authorities.setAuthority(role);
         authorities.setUser(user);
         if(user.getBorrower()!=null){
@@ -105,6 +113,11 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public List<String> updateUserById(UserDto updateUser) {
+        //validate that the required fields are not blank and email is not in use
+        List<String> validation = validationService.updateAccountGeneralCheck(updateUser);
+        if(validation.get(0).equalsIgnoreCase("false")){
+            return validation;
+        }
         User user = new User(updateUser);
         Borrower borrower = user.getBorrower();
         borrower.setUser(user);
@@ -119,14 +132,14 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public List<String> staffAddNewAccount(UserDto newUser, String role) {
+
+        //validate that the required fields are not blank and email is not in use
+        List<String> validation = validationService.newAccountGeneralCheck(newUser);
+        if(validation.get(0).equalsIgnoreCase("false")){
+            return validation;
+        }
+
         List<String> response = new ArrayList<>();
-        //validate that the email/username is available
-        Optional<User> usernameCheck = userRepository.findByUsername(newUser.getUsername());
-        if(usernameCheck.isPresent()){
-            response.add("Email is already in use");
-            response.add("danger");
-            return response;
-        };
         User user = new User(newUser);
         Authorities authority = new Authorities();
         if(role.equalsIgnoreCase("ROLE_STAFF")){

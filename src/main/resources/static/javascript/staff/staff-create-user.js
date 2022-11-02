@@ -60,7 +60,7 @@ const addUser = async () => {
         const responseArr = await response.json()
         console.log("done adding")
         clearForm();
-        alert(responseArr[0], responseArr[1]);
+        alert(responseArr[responseArr.length -2], responseArr[responseArr.length -1]);
     }
 
 }
@@ -75,6 +75,7 @@ const showStaffsForm = () =>{
 }
 
 const alert = (message, type) => {
+    alertPlaceholder.innerHTML="";
     const wrapper = document.createElement('div')
     wrapper.innerHTML = [
         `<div class="alert alert-${type} alert-dismissible" role="alert">`,

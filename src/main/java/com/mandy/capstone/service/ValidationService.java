@@ -9,9 +9,11 @@ import java.util.List;
 public interface ValidationService {
     //validation for general field that can be applied to all account
     @Transactional
-    List<String> newAccountGeneralCheck(UserDto userDto, String role);
+    List<String> newAccountGeneralCheck(UserDto userDto);
 
     //validation for fields that needed to calculate rate
     @Transactional
     List<String> rateFieldCheck(Borrower borrower);
+
+    List<String> updateAccountGeneralCheck(UserDto updateUser);
 }

@@ -22,9 +22,8 @@ public class ValidationServiceImpl implements ValidationService {
 //validation for general field that can be applied to all account
     @Override
     @Transactional
-    public List<String> newAccountGeneralCheck(UserDto userDto, String role){
+    public List<String> newAccountGeneralCheck(UserDto userDto){
         List<String> response = new ArrayList<>();
-
         //check for existing username (email)
         Optional<User> usernameCheck = userRepository.findByUsername(userDto.getUsername());
         if(usernameCheck.isPresent()){
@@ -33,7 +32,29 @@ public class ValidationServiceImpl implements ValidationService {
             response.add("danger");
             return response;
         };
+       return accountCommonFieldCheck(userDto);
+    };
 
+    public List<String> updateAccountGeneralCheck(UserDto userDto){
+        User savedUser = userRepository.findUserById(userDto.getId());
+        if(userDto.getUsername().equalsIgnoreCase(savedUser.getUsername())){
+            return accountCommonFieldCheck(userDto);
+        }else{
+            List<String> response = new ArrayList<>();
+            Optional<User> usernameCheck = userRepository.findByUsername(userDto.getUsername());
+            if(usernameCheck.isPresent()){
+                response.add("false");
+                response.add("Email is already in use");
+                response.add("danger");
+                return response;
+            };
+            return accountCommonFieldCheck(userDto);
+        }
+    }
+
+//to consolidate common field check for 2 methods above because I don't want to copy codes.
+    public List<String> accountCommonFieldCheck(UserDto userDto){
+        List<String> response = new ArrayList<>();
         //check for blank fields
         if("".equals(userDto.getUsername())){
             response.add("false");
@@ -65,14 +86,12 @@ public class ValidationServiceImpl implements ValidationService {
             response.add("danger");
             return response;
         }
-
-//if all checks passed then return true - all fields are valid
+        //if all checks passed then return true - all fields are valid
         response.add("true");
         return response;
-    };
+    }
 
-
-    //validation for fields that needed to calculate rate
+//validation for fields that needed for rate calculation
     @Override
     @Transactional
     public List<String> rateFieldCheck(Borrower borrower) {
@@ -84,20 +103,20 @@ public class ValidationServiceImpl implements ValidationService {
         String occupancy = borrower.getOccupancyType();
         String propertyType = borrower.getPropertyType();
 
-
-        if(loanAmount==0){
+        if(loanAmount<0){
             response.add("false");
-            response.add("Loan amount cannot be 0");
+            response.add("Loan amount cannot be less than or equal 0");
             response.add("danger");
             return response;
         };
+
         if(borrower.getCreditScore()<620){
             response.add("false");
             response.add("Conventional loan only available to credit score of 620 and higher");
             response.add("danger");
             return response;
         };
-        if(propertyValue==0){
+        if(propertyValue<0){
             response.add("false");
             response.add("Property must have value in order to qualify for a loan");
             response.add("danger");

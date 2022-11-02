@@ -94,7 +94,6 @@ const checkRate = async () =>{
         .then(response => response.json())
         .then(data =>{
             rateBody.innerHTML="";
-            alertPlaceholder.innerHTML="";
             if(data[0]==="false"){
                 alert(data[1],data[2]);
             }else{
@@ -122,6 +121,7 @@ const createRateCard = (obj) =>{
 }
 
 const alert = (message, type) => {
+    alertPlaceholder.innerHTML="";
     const wrapper = document.createElement('div')
     wrapper.innerHTML = [
         `<div class="alert alert-${type} alert-dismissible" role="alert">`,

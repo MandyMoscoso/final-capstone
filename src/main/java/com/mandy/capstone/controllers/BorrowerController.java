@@ -33,7 +33,7 @@ public class BorrowerController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @PutMapping("/edituser")
-    public void editUser(@RequestBody UserDto userDto, @AuthenticationPrincipal CustomSecurityUser user){
+    public List<String> editUser(@RequestBody UserDto userDto, @AuthenticationPrincipal CustomSecurityUser user){
         Long userId = user.getId();
         userDto.setId(userId);
         UserDto savedUser =userService.getUserByUserId(userId) ;
@@ -48,9 +48,6 @@ public class BorrowerController {
             userDto.setPassword(passHash);
         }
 //        System.out.println(userId + "   " + userDto );
-        userService.updateUserById(userDto);
-
+        return userService.updateUserById(userDto);
     }
-
-
 }

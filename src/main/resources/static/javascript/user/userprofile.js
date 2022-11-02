@@ -2,7 +2,7 @@
 const baseUrl = "http://localhost:8080";
 const csrfToken = document.getElementById("csrf")
 const logOutBtn = document.getElementById("log-out")
-
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const firstName = document.getElementById("firstname");
 const lastName = document.getElementById("lastname");
 const email = document.getElementById("username");
@@ -134,16 +134,33 @@ const handleSubmit = async () => {
     }
     bodyObj = JSON.stringify(bodyObj)
     console.log(bodyObj)
-    await fetch(`${baseUrl}/edituser`, {
+    const response = await  fetch(`${baseUrl}/edituser`, {
                   method: "PUT",
                   body: bodyObj,
                   headers: headers
               })
                   .catch(err => console.error(err))
     password.innerHTML=''
+    if (response.status === 200){
+        const responseArr = await response.json()
+        console.log(responseArr)
+        alert(responseArr[responseArr.length -2], responseArr[responseArr.length -1]);
+    }
 
 }
 
+const alert = (message, type) => {
+    alertPlaceholder.innerHTML="";
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    alertPlaceholder.append(wrapper)
+}
 const logOut = async() =>{
     await fetch(`${baseUrl}/logout`, {
         method: "POST",
