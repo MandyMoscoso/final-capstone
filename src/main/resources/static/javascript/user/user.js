@@ -94,6 +94,7 @@ const checkRate = async () =>{
         .then(response => response.json())
         .then(data =>{
             rateBody.innerHTML="";
+            alertPlaceholder.innerHTML="";
             if(data[0]==="false"){
                 alert(data[1],data[2]);
             }else{
@@ -107,7 +108,6 @@ const createRateCard = (obj) =>{
     let n = loanTerm.value *12;
     let p = loanAmount.value;
     let r = obj.rate / 1200;
-    console.log("loan amount: " + p + "loan interest: " + r + "loan term: " + n)
     let monthlyPmt =Math.round(p * r * ((r +1)**n) / ((1+r)**n -1)) ;
     let rateCard = document.createElement("tr");
     rateCard.classList.add("text-right")

@@ -51,21 +51,26 @@ public class RateServiceImpl  implements RateService {
             ltvRange = "ltv80";
         } else if (ltv<=85){
             ltvRange = "ltv85";
-        } else if (ltv<90) {
+        } else if (ltv<=90) {
             ltvRange = "ltv90";
         } else if (ltv<=95) {
             ltvRange = "ltv95";
         }
         int credit = obj.getCreditScore();
 
-        List<FicoAdj> ficoRateSheet = ficoAdjRepositories.findAllByOrderByFicoDesc();
+
         double ficoRate = 0;
-        for (int i = 0; i < ficoRateSheet.size(); i++) {
-            if(credit>=ficoRateSheet.get(i).getFico()){
-                ficoRate = ficoRateSheet.get(i).get(ltvRange);
-                break;
+//fico only matter for loan term over 15 years
+        if(!"15".equals(obj.getLoanTerm())){
+            List<FicoAdj> ficoRateSheet = ficoAdjRepositories.findAllByOrderByFicoDesc();
+            for (int i = 0; i < ficoRateSheet.size(); i++) {
+                if(credit>=ficoRateSheet.get(i).getFico()){
+                    ficoRate = ficoRateSheet.get(i).get(ltvRange);
+                    break;
+                }
+//only happens when fico is below 620, which should be prevented by validationService.rateFieldCheck(obj) - will show alert that not qualified for conventional loans
+                ficoRate=999;
             }
-            ficoRate=999;
         }
         double cashoutRate = 0;
         if(obj.getLoanPurpose().equalsIgnoreCase("Refinance-Cashout")){
@@ -75,11 +80,13 @@ public class RateServiceImpl  implements RateService {
                     cashoutRate = cashoutRateSheet.get(i).get(ltvRange);
                     break;
                 }
+//only happens when cash out with ltv over 80%. this should be prevented by validationService.rateFieldCheck(obj)
                 cashoutRate=999;
             }
         }
         double propertyTypeRate = 0;
-        if(obj.getPropertyType().equalsIgnoreCase("Duplex") ||obj.getPropertyType().equalsIgnoreCase("Triplex") ||obj.getPropertyType().equalsIgnoreCase("Fourplex")){
+        String propertyType = obj.getPropertyType();
+        if(propertyType.equalsIgnoreCase("Duplex") ||propertyType.equalsIgnoreCase("Triplex") ||propertyType.equalsIgnoreCase("Fourplex")){
             List<PropertyTypeAdj> propertyTypeRateSheet = propertyTypeAdjRepositories.findAllByOrderByPropertyTypeAsc();
             if(obj.getPropertyType().equalsIgnoreCase("Duplex")){
                 propertyTypeRate= propertyTypeRateSheet.get(0).get(ltvRange);
@@ -90,6 +97,7 @@ public class RateServiceImpl  implements RateService {
 
 //occupancy is not owner occupied, they are 2nd home or investment, and it will have an adjustment rate
         double occupancyRate = 0;
+//owner occupied doesn't have adjustment
         if(!obj.getOccupancyType().equalsIgnoreCase("owner-occupied")){
             List<OccupancyAdj> occupancyRateSheet = occupancyAdjRepositories.findAllByOrderByOccupancyAsc();
 
@@ -100,10 +108,8 @@ public class RateServiceImpl  implements RateService {
             }
         }
 
- System.out.println("fico rate is " + ficoRate +"\ncashoutrate is " + cashoutRate + "\n propertytype rate is " +propertyTypeRate+"\noccupancyrate is " + occupancyRate);
+// System.out.println("fico rate is " + ficoRate +"\ncashoutrate is " + cashoutRate + "\n propertytype rate is " +propertyTypeRate+"\noccupancyrate is " + occupancyRate);
         double adjRate = ficoRate + cashoutRate + propertyTypeRate + occupancyRate;
-
-
 
         //Have to use wildcards because unsure of return class
         List<? extends BaseRate> baseRateSheet = new ArrayList<>();
@@ -123,7 +129,6 @@ public class RateServiceImpl  implements RateService {
             newObj.setDay45(Math.round((baseRateSheet.get(i).getDay45()+adjRate)*100)/100D);
             copyRateSheet.add(newObj);
         }
-        System.out.println(copyRateSheet);
         return copyRateSheet;
     }
 

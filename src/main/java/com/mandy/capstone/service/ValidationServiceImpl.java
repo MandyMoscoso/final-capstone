@@ -71,18 +71,21 @@ public class ValidationServiceImpl implements ValidationService {
         return response;
     };
 
+
     //validation for fields that needed to calculate rate
     @Override
     @Transactional
     public List<String> rateFieldCheck(Borrower borrower) {
-        List<String> propertyType = Arrays.asList("Single House", "Townhouse", "Condo", "Duplex", "Triplex","Fourplex");
-        List<String> occupancyType = Arrays.asList("owner-occupied", "Second Home", "Investment");
-        List<String> loanPurpose = Arrays.asList("Purchase", "Refinance", "Refinance-Cashout");
-        List<String> loanTerm = Arrays.asList("30", "20", "15");
-
         List<String> response = new ArrayList<>();
+        double loanAmount = borrower.getLoanAmount();
+        double propertyValue = borrower.getPropertyValue();
+        double ltv = loanAmount/propertyValue;
+        String loanPurpose = borrower.getLoanPurpose();
+        String occupancy = borrower.getOccupancyType();
+        String propertyType = borrower.getPropertyType();
 
-        if(borrower.getLoanAmount()==0){
+
+        if(loanAmount==0){
             response.add("false");
             response.add("Loan amount cannot be 0");
             response.add("danger");
@@ -94,12 +97,51 @@ public class ValidationServiceImpl implements ValidationService {
             response.add("danger");
             return response;
         };
-        if(borrower.getPropertyValue()==0){
+        if(propertyValue==0){
             response.add("false");
             response.add("Property must have value in order to qualify for a loan");
             response.add("danger");
             return response;
         };
+
+        //to check if loan amount is higher than property value
+        if(loanAmount>= propertyValue){
+            response.add("false");
+            response.add("Loan amount cannot be equal or higher than property value");
+            response.add("danger");
+            return response;
+        }
+
+        //cash out refinance is not available for LTV over 80%
+        if("Refinance-Cashout".equalsIgnoreCase(loanPurpose) && ltv > 0.8){
+            response.add("false");
+            response.add("Refinance cash out is not available for LTV over 80%");
+            response.add("danger");
+            return response;
+        }
+
+        //investment is not available for LTV over 80%
+        if("Investment".equalsIgnoreCase(occupancy) && ltv > 0.8){
+            response.add("false");
+            response.add("Occupancy of investment is not available for LTV over 80%");
+            response.add("danger");
+            return response;
+        }
+        //second home is not available for LTV over 80%
+        if("Second Home".equalsIgnoreCase(occupancy) && ltv > 0.9){
+            response.add("false");
+            response.add("Occupancy of second home is not available for LTV over 90%");
+            response.add("danger");
+            return response;
+        }
+
+        //3-4 units is not available for LTV over 80%
+        if("Triplex".equalsIgnoreCase(propertyType) || "Fourplex".equalsIgnoreCase(propertyType)){
+            response.add("false");
+            response.add("3-4 units is not available for LTV over 80%");
+            response.add("danger");
+            return response;
+        }
 
 //those field below are selections on my frontend. If the user using my frontend to send request, those should be all valid. The validations below are only to prevent against requests coming from other method like Postman, powershell, curl...
         if(!"Conventional".equalsIgnoreCase(borrower.getLoanType())){
@@ -109,26 +151,32 @@ public class ValidationServiceImpl implements ValidationService {
             return response;
         };
 
-        if(!propertyType.contains(borrower.getPropertyType())){
+        List<String> propertyTypeList = Arrays.asList("Single House", "Townhouse", "Condo", "Duplex", "Triplex","Fourplex");
+        if(!propertyTypeList.contains(borrower.getPropertyType())){
             response.add("false");
             response.add("Property type is not allowed");
             response.add("danger");
             return response;
         };
 
-        if(!occupancyType.contains(borrower.getOccupancyType())){
+        List<String> occupancyTypeList = Arrays.asList("owner-occupied", "Second Home", "Investment");
+        if(!occupancyTypeList.contains(occupancy)){
             response.add("false");
             response.add("Occupancy type is not allowed");
             response.add("danger");
             return response;
         };
-        if(!loanPurpose.contains(borrower.getLoanPurpose())){
+
+        List<String> loanPurposeList = Arrays.asList("Purchase", "Refinance", "Refinance-Cashout");
+        if(!loanPurposeList.contains(loanPurpose)){
             response.add("false");
             response.add("Loan purpose is not allowed");
             response.add("danger");
             return response;
         };
-        if(!loanTerm.contains(borrower.getLoanTerm())){
+
+        List<String> loanTermList = Arrays.asList("30", "20", "15");
+        if(!loanTermList.contains(borrower.getLoanTerm())){
             response.add("false");
             response.add("Loan term is not allowed");
             response.add("danger");
