@@ -55,31 +55,31 @@ public class ValidationServiceImpl implements ValidationService {
     public List<String> accountCommonFieldCheck(UserDto userDto){
         List<String> response = new ArrayList<>();
         //check for blank fields
-        if("".equals(userDto.getUsername())){
+        if("".equals(userDto.getUsername().trim())){
             response.add("false");
             response.add("Email cannot be blank");
             response.add("danger");
             return response;
         }
-        if("".equals(userDto.getFirstname())){
+        if("".equals(userDto.getFirstname().trim())){
             response.add("false");
             response.add("Firstname cannot be blank");
             response.add("danger");
             return response;
         }
-        if("".equals(userDto.getLastname())){
+        if("".equals(userDto.getLastname().trim())){
             response.add("false");
             response.add("Lastname cannot be blank");
             response.add("danger");
             return response;
         }
-        if("".equals(userDto.getPassword())){
+        if("".equals(userDto.getPassword().trim())){
             response.add("false");
             response.add("Password cannot be blank");
             response.add("danger");
             return response;
         }
-        if("".equals(userDto.getPhonenumber())){
+        if("".equals(userDto.getPhonenumber().trim())){
             response.add("false");
             response.add("Phone number cannot be blank");
             response.add("danger");

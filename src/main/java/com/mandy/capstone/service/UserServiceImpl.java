@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService{
         //add Borrower to User obj since this is a borrower register
         Borrower borrower = new Borrower();
         borrower.setUser(user);
+        user.setBorrower(borrower);
         userRepository.saveAndFlush(user);
         response.add("User account created successfully");
         response.add("success");

@@ -39,7 +39,7 @@ public class BorrowerController {
         UserDto savedUser =userService.getUserByUserId(userId) ;
         userDto.setAuthoritiesDto(savedUser.getAuthoritiesDto());
         userDto.getBorrowerDto().setBorrower_id(savedUser.getBorrowerDto().getBorrower_id());
-//password doesn't show up in request so if password = null, meaning it is unchanged
+//password doesn't show up in request so if password = blank, meaning it is unchanged
         //if ("".equals(userDto.getPassword()): check for both empty and null
         if ("".equals(userDto.getPassword())){
             userDto.setPassword(savedUser.getPassword());

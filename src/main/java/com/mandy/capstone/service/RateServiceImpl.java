@@ -132,7 +132,7 @@ public class RateServiceImpl  implements RateService {
 // System.out.println("fico rate is " + ficoRate +"\ncashoutrate is " + cashoutRate + "\n propertytype rate is " +propertyTypeRate+"\noccupancyrate is " + occupancyRate);
         double adjRate = ficoRate + cashoutRate + propertyTypeRate + occupancyRate;
 
-        //Have to use wildcards because unsure of return class
+        //Have to use wildcards because unknown of return class (list of cf30 is not a child of list of baserate - cannot use generics)
         List<? extends BaseRate> baseRateSheet = new ArrayList<>();
         switch (obj.getLoanTerm()){
             case "30": baseRateSheet = cf30Repositories.findAll();  break;
