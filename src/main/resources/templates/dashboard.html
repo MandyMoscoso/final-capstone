@@ -73,6 +73,10 @@
                                     <input class="text-muted mb-0 col-sm-1" type="number"  id="credit-score"></input>
                                 </div>
                                 <div class="row mb-1">
+                                    <div class="col-sm-2 text-center">
+                                        <p class="mb-0">Property Value</p>
+                                    </div>
+                                    <input class="text-muted mb-0 col-sm-3" type="number" id="property-value"></input>
                                     <div class="col-sm-2">
                                         <p class="mb-0">Loan Purpose</p>
                                     </div>
@@ -82,14 +86,7 @@
                                         <option value="Refinance">Refinance</option>
                                         <option value="Refinance-Cashout">Refinance Cash out</option>
                                     </select>
-                                    <div class="col-sm-2 text-center">
-                                        <p class="mb-0">Loan term</p>
-                                    </div>
-                                    <select class="text-muted mb-0 col-sm-3 " name="loan-term" id="loan-term">
-                                        <option value="30">30 Years Fixed</option>
-                                        <option value="20">20 Years Fixed</option>
-                                        <option value="15">15 Years Fixed</option>
-                                    </select>
+
                                 </div>
                                 <div class="row mb-1">
                                     <div class="col-sm-2">
@@ -120,9 +117,13 @@
                                         <option value="Fourplex">Fourplex</option>
                                     </select>
                                     <div class="col-sm-2 text-center">
-                                        <p class="mb-0">Property Value</p>
+                                        <p class="mb-0">Loan term</p>
                                     </div>
-                                    <input class="text-muted mb-0 col-sm-3" type="number" id="property-value"></input>
+                                    <select class="text-muted mb-0 col-sm-3 " name="loan-term" id="loan-term">
+                                        <option value="30">30 Years Fixed</option>
+                                        <option value="20">20 Years Fixed</option>
+                                        <option value="15">15 Years Fixed</option>
+                                    </select>
                                 </div>
                                 <button id="saveBtn" type="button" class="btn btn-success col-sm-2 mt-2 btn-sm" onclick="checkRate()">Show Rate</button>
 

@@ -33,21 +33,16 @@ public class AdminController {
     private UserRepository userRepository;
 
     @PostMapping("/admin/createuser/{role}")
-    //@Responsebody:  annotation can be put on a method and indicates that the return type should be written straight to the HTTP response body (and not placed in a Model, or interpreted as a view name).
-    //need it here because I used @Controller vs @RestController
-//    @ResponseBody
     public List<String> addAcount(@RequestBody UserDto newUser, @PathVariable String role){
         String passHash = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(passHash);
         System.out.println(role);
-        return userService.adminAddNewAccount(newUser, role);
-    }
+        return userService.adminAddNewAccount(newUser, role);    }
 
-      @GetMapping("admin/alluser")
+    @GetMapping("admin/alluser")
     public List <User> showAllUser(){
         return  userRepository.findAll();
     }
-
     @GetMapping("/admin/getuser/{userId}")
     public UserDto getUser(@PathVariable Long userId){
         UserDto userDto = userService.getUserByUserId(userId) ;
@@ -57,7 +52,7 @@ public class AdminController {
     }
     @DeleteMapping("admin/delete/{ids}")
     public List<String> deleteUsers (@PathVariable String ids){
-        System.out.println(ids);
+ //convert string to arrays then list<Long>. Cannot send it directly because delete cannot have a body unless I changed tomcat server set up.
         List<Long> longIds = Arrays
                 .stream(ids.split("-"))
                 .map(Long::parseLong)
@@ -68,13 +63,12 @@ public class AdminController {
         response.add("warning");
         return response;
     }
-
     @PutMapping("/admin/edituser/{role}")
     @ResponseBody
     public List<String> editUser(@RequestBody UserDto userDto, @PathVariable String role){
         Long userId = userDto.getId();
         UserDto savedUser = new UserDto(userRepository.findById(userId).get());
-        //this if statement is needed to avoid user role being switched from borrower to staff/admin and vise versa. if the new role is non-borrower roles, it may cause db to create a duplicate borrower on borrowers table due to the borrowerdto being null. so if that the case, I will assign the saved borrower on db to the userDto obj.
+//this if statement is needed to avoid user role being switched from borrower to staff/admin and vise versa. if the new role is non-borrower roles, it may cause db to create a duplicate borrower on borrowers table due to the borrowerdto being null. so if that the case, I will assign the saved borrower on db to the userDto obj.
         if(userDto.getBorrowerDto()!=null){
             userDto.getBorrowerDto().setBorrower_id(savedUser.getBorrowerDto().getBorrower_id());
         }else {
@@ -88,17 +82,5 @@ public class AdminController {
             userDto.setPassword(passHash);
         }
         return userService.adminUpdateUserById(userDto,userId, role);
-
     }
-
-
-//I am using MvcConfig for view, so no need for this get request. This is just an alternative way to get the job done. MvcConfig has all view in 1 place so easier to keep track. To use this, need to change to @Controller
-//    @GetMapping("/adminnewuser")
-//    public String getCreateUserPage(){
-//        return "admin-create-user";
-//    }
-
-
-
-
 }

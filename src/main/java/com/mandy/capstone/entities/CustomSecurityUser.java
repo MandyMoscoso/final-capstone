@@ -2,6 +2,7 @@ package com.mandy.capstone.entities;
 
 import com.mandy.capstone.entities.Authorities;
 import com.mandy.capstone.entities.User;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
+@Data
 public class CustomSecurityUser extends User implements UserDetails {
 
     //this constructor wil be used in UserDetailsServiceImpl return new CustomSecurityUser(user);
@@ -22,15 +23,8 @@ public class CustomSecurityUser extends User implements UserDetails {
         this.setFirstname(user.getFirstname());
         this.setLastname(user.getLastname());
         this.setPhonenumber(user.getPhonenumber());
+        this.setBorrower(user.getBorrower());
     }
-    //noargs constructor. be here just to avoid bugs. that's how Java is.
-    public CustomSecurityUser() {
-    }
-
-//    private static final long serialVersionUID = -4325526131047887755L;
-
-
-
 
     @Override
     public boolean isAccountNonExpired() {

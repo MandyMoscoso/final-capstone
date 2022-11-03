@@ -20,9 +20,11 @@ import java.util.Optional;
 public class BorrowerController {
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @GetMapping("/getuser")
     public UserDto getUser(@AuthenticationPrincipal CustomSecurityUser user){
+        //using @AuthenticationPrincipal to ensure user can only view their own profile
         Long userId = user.getId();
         UserDto userDto = userService.getUserByUserId(userId) ;
         userDto.setAuthoritiesDto(null);
@@ -30,8 +32,6 @@ public class BorrowerController {
         return userDto;
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     @PutMapping("/edituser")
     public List<String> editUser(@RequestBody UserDto userDto, @AuthenticationPrincipal CustomSecurityUser user){
         Long userId = user.getId();
@@ -47,7 +47,6 @@ public class BorrowerController {
             String passHash = passwordEncoder.encode(userDto.getPassword());
             userDto.setPassword(passHash);
         }
-//        System.out.println(userId + "   " + userDto );
         return userService.updateUserById(userDto);
     }
 }

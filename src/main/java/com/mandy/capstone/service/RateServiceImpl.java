@@ -1,6 +1,9 @@
 package com.mandy.capstone.service;
 import com.mandy.capstone.entities.Borrower;
+import com.mandy.capstone.entities.CustomSecurityUser;
+import com.mandy.capstone.entities.User;
 import com.mandy.capstone.entities.ratesheets.*;
+import com.mandy.capstone.repositories.UserRepository;
 import com.mandy.capstone.repositories.ratesheetsrepo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,8 @@ import java.util.List;
 
 @Service
 public class RateServiceImpl  implements RateService {
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     private CashOutAdjRepositories cashOutAdjRepositories;
     @Autowired
@@ -30,15 +35,36 @@ public class RateServiceImpl  implements RateService {
 
     @Override
     @Transactional
-    public  List<?> rates(Borrower obj){
+    public  List<?> rates(Borrower obj, CustomSecurityUser user){
         List<String> validation = validationService.rateFieldCheck(obj);
         if(validation.get(0).equalsIgnoreCase("false")){
             return validation;
         }
+        //update the borrower info to database
+        double loanAmount = obj.getLoanAmount();
+        double propertyValue = obj.getPropertyValue();
+        String propertyType = obj.getPropertyType();
+        String loanType = obj.getLoanType();
+        String occupancy = obj.getOccupancyType();
+        int credit = obj.getCreditScore();
+        String loanTerm = obj.getLoanTerm();
+        String loanPurpose = obj.getLoanPurpose();
+// only those fields below needed to be updated. the rest should be the same.
+        Borrower borrower = user.getBorrower();
+        borrower.setLoanAmount(loanAmount);
+        borrower.setPropertyValue(propertyValue);
+        borrower.setLoanType(loanType);
+        borrower.setPropertyType(propertyType);
+        borrower.setOccupancyType(occupancy);
+        borrower.setCreditScore(credit);
+        borrower.setLoanTerm(loanTerm);
+        borrower.setLoanPurpose(loanPurpose);
+
+        User updateUser = new User(user);
+        userRepository.saveAndFlush( updateUser);
 
         //if all fields are valid, then do the math
-
-        double ltv = obj.getLoanAmount()/obj.getPropertyValue() * 100;
+        double ltv = loanAmount/propertyValue * 100;
         String ltvRange = "";
         //return the column name based on ltv. I created a special getter that take a string and return the column based on that string value. Have to do it this way because Lombok generated getter has the column name in the method name instead of a variable.
         if(ltv <=60){
@@ -56,12 +82,11 @@ public class RateServiceImpl  implements RateService {
         } else if (ltv<=95) {
             ltvRange = "ltv95";
         }
-        int credit = obj.getCreditScore();
 
 
         double ficoRate = 0;
 //fico only matter for loan term over 15 years
-        if(!"15".equals(obj.getLoanTerm())){
+        if(!"15".equals(loanTerm)){
             List<FicoAdj> ficoRateSheet = ficoAdjRepositories.findAllByOrderByFicoDesc();
             for (int i = 0; i < ficoRateSheet.size(); i++) {
                 if(credit>=ficoRateSheet.get(i).getFico()){
@@ -73,7 +98,7 @@ public class RateServiceImpl  implements RateService {
             }
         }
         double cashoutRate = 0;
-        if(obj.getLoanPurpose().equalsIgnoreCase("Refinance-Cashout")){
+        if(loanPurpose.equalsIgnoreCase("Refinance-Cashout")){
             List<CashOutAdj> cashoutRateSheet = cashOutAdjRepositories.findAllByOrderByFicoDesc();
             for (int i = 0; i < cashoutRateSheet.size(); i++) {
                 if(credit>=cashoutRateSheet.get(i).getFico()){
@@ -85,7 +110,6 @@ public class RateServiceImpl  implements RateService {
             }
         }
         double propertyTypeRate = 0;
-        String propertyType = obj.getPropertyType();
         if(propertyType.equalsIgnoreCase("Duplex") ||propertyType.equalsIgnoreCase("Triplex") ||propertyType.equalsIgnoreCase("Fourplex")){
             List<PropertyTypeAdj> propertyTypeRateSheet = propertyTypeAdjRepositories.findAllByOrderByPropertyTypeAsc();
             if(obj.getPropertyType().equalsIgnoreCase("Duplex")){
@@ -101,7 +125,7 @@ public class RateServiceImpl  implements RateService {
         if(!obj.getOccupancyType().equalsIgnoreCase("owner-occupied")){
             List<OccupancyAdj> occupancyRateSheet = occupancyAdjRepositories.findAllByOrderByOccupancyAsc();
 
-            if(obj.getOccupancyType().equalsIgnoreCase("Second Home")){
+            if(occupancy.equalsIgnoreCase("Second Home")){
                 occupancyRate=occupancyRateSheet.get(1).get(ltvRange);
             }else{
                 occupancyRate=occupancyRateSheet.get(0).get(ltvRange);

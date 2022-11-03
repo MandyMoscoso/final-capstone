@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//GrantedAuthority at some point need serial so we need a serial
 public class Authorities implements GrantedAuthority {
     //I kept all the column name as variable names so I skipped @Column for now. Will need @Column if wanna do more customization
     @Id
@@ -26,8 +25,6 @@ public class Authorities implements GrantedAuthority {
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "user_id")
-    ////we have User user because this is a many to one relationship. we may have many authorities for one user.
-    // in users table, it will be the opposite. we  haveSet<Authorities>, since the other side of the relationship is one to many - one user can have many authorities.
     private User user;
 
     public Authorities(String role) {

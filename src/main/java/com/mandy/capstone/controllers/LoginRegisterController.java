@@ -13,7 +13,7 @@ import java.util.List;
 //@Controler will return the string as template url .
 // //@RestController will return string as string.
 //@RestController = @Controller and @ResponseBody all at one
-@Controller
+@RestController
 @RequestMapping
 public class LoginRegisterController {
     @GetMapping("/register")
@@ -25,16 +25,9 @@ public class LoginRegisterController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    @ResponseBody
     public List<String> addUser(@RequestBody UserDto newUser){
         String passHash = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(passHash);
         return userService.addUser(newUser);
     }
-
-
-
-
-
-
 }

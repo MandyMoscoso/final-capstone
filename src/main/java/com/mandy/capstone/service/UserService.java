@@ -10,10 +10,8 @@ public interface UserService {
     List<String> addUser(UserDto newUser);
     @Transactional
     UserDto getUserByUserId(Long userId);
-
     @Transactional
     List<String> updateUserById(UserDto updateUser);
-
     @Transactional
     List<String> adminUpdateUserById(UserDto userDto, Long userId, String role);
     @Transactional

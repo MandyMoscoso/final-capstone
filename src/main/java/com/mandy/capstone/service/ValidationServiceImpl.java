@@ -51,7 +51,6 @@ public class ValidationServiceImpl implements ValidationService {
             return accountCommonFieldCheck(userDto);
         }
     }
-
 //to consolidate common field check for 2 methods above because I don't want to copy codes.
     public List<String> accountCommonFieldCheck(UserDto userDto){
         List<String> response = new ArrayList<>();

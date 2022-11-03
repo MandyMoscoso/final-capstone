@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //this config is to set which template will be used when user request that specific endpoint. It can be done by using @GetMapping and return redirect but this way is faster and easier to view for all template.
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
-
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/adminhome").setViewName("admindashboard");
         registry.addViewController("/adminnewuser").setViewName("admin-create-user");

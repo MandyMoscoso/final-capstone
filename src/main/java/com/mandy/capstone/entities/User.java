@@ -59,4 +59,14 @@ public class User {
         this.setBorrower(borrower);
         this.setAuthorities(authority);
     }
+    public User(CustomSecurityUser user) {
+        this.setAuthorities(user.getAuthorities());
+        this.setId(user.getId());
+        this.setPassword(((user.getPassword())));
+        this.setUsername(user.getUsername());
+        this.setFirstname(user.getFirstname());
+        this.setLastname(user.getLastname());
+        this.setPhonenumber(user.getPhonenumber());
+        this.setBorrower(user.getBorrower());
+    }
 }

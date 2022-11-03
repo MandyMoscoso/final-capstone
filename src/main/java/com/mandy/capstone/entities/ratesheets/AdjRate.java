@@ -13,7 +13,6 @@ import javax.persistence.MappedSuperclass;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdjRate {
-
     private double ltv60;
     private double ltv70;
     private double ltv75;

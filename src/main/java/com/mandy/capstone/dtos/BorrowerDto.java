@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-//@NoArgsConstructor
 public class BorrowerDto {
     private Long borrower_id;
     private String address;

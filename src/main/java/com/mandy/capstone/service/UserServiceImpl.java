@@ -16,18 +16,13 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private BorrowerRepositories borrowerRepository;
     @Autowired
     private ValidationService validationService;
-
-
-    //any time you are saving something to the database you should include the @Transactional annotation which ensures that the transaction that gets opened with your datasource gets resolved
     //this method is to add user
-
     @Override
     @Transactional
     public UserDto getUserByUserId(Long userId) {
@@ -45,7 +40,6 @@ public class UserServiceImpl implements UserService{
             return validation;
         }
         List<String> response = new ArrayList<>();
-
         User user = new User(newUser);
         //add role to authority obj and then add this obj to user so Jpa will save to users and authorities table in 1 run.
         Authorities authority = new Authorities("ROLE_USER");
@@ -70,7 +64,6 @@ public class UserServiceImpl implements UserService{
         if(validation.get(0).equalsIgnoreCase("false")){
             return validation;
         }
-
         List<String> response = new ArrayList<>();
         User user = new User(newUser);
         Authorities authority = new Authorities(role);
@@ -85,13 +78,11 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public  List<String> adminUpdateUserById(UserDto updateUser, Long userId, String role) {
-
         //validate that the required fields are not blank and email is not in use
         List<String> validation = validationService.updateAccountGeneralCheck(updateUser);
         if(validation.get(0).equalsIgnoreCase("false")){
             return validation;
         }
-
         User savedUser = userRepository.findUserById(userId);
         User user = new User(updateUser);
         Authorities authorities = (Authorities) savedUser.getAuthorities().toArray()[0];
@@ -107,8 +98,6 @@ public class UserServiceImpl implements UserService{
         response.add("success");
         return response;
     }
-
-
     //if the request to update user info from borrower or staff role passed all validation, then this method will be called.
     @Override
     @Transactional
@@ -138,7 +127,6 @@ public class UserServiceImpl implements UserService{
         if(validation.get(0).equalsIgnoreCase("false")){
             return validation;
         }
-
         List<String> response = new ArrayList<>();
         User user = new User(newUser);
         Authorities authority = new Authorities();

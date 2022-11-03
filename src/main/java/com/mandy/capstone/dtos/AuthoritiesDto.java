@@ -21,11 +21,8 @@ public class AuthoritiesDto {
         if(authorities.getAuthority()!=null){
             this.authority= authorities.getAuthority();
         }
-
     }
-
     public AuthoritiesDto(String role) {
         this.authority=role;
     }
-
 }

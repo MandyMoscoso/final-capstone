@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Controller
+
+@RestController
 @RequestMapping("staff")
 public class StaffController {
     @Autowired
@@ -25,9 +23,6 @@ public class StaffController {
     private UserRepository userRepository;
 
     @PostMapping("/createuser/{role}")
-    @ResponseBody
-    //@Responsebody:  annotation can be put on a method and indicates that the return type should be written straight to the HTTP response body (and not placed in a Model, or interpreted as a view name).
-    //need it here because I used @Controller vs @RestController
     public List<String> addAcount(@RequestBody UserDto newUser, @PathVariable String role){
         String passHash = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(passHash);
@@ -35,23 +30,18 @@ public class StaffController {
     }
 
     @GetMapping("alluser")
-    @ResponseBody
     public List <User> showAllUser(){
         return  userRepository.findAll();
     }
 
     @GetMapping("/getuser/{userId}")
-    @ResponseBody
     public UserDto getUser(@PathVariable Long userId){
         UserDto userDto = userService.getUserByUserId(userId) ;
         userDto.setAuthoritiesDto(null);
         userDto.setPassword(null);
         return userDto;
     }
-
-
     @PutMapping("/edituser/{role}")
-    @ResponseBody
     public List<String>  editUser(@RequestBody UserDto userDto, @PathVariable String role){
         List<String> response =new ArrayList<>();
         Long userId = userDto.getId();
