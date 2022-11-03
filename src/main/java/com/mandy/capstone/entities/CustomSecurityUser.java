@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-@Data
+
 public class CustomSecurityUser extends User implements UserDetails {
 
     //this constructor wil be used in UserDetailsServiceImpl return new CustomSecurityUser(user);
@@ -25,7 +25,9 @@ public class CustomSecurityUser extends User implements UserDetails {
         this.setPhonenumber(user.getPhonenumber());
         this.setBorrower(user.getBorrower());
     }
-
+    //noargs constructor. be here just to avoid bugs. that's how Java is.
+    public CustomSecurityUser() {
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;

@@ -50,7 +50,8 @@ public class RateServiceImpl  implements RateService {
         String loanTerm = obj.getLoanTerm();
         String loanPurpose = obj.getLoanPurpose();
 // only those fields below needed to be updated. the rest should be the same.
-        Borrower borrower = user.getBorrower();
+        User savedUser = userRepository.findUserById(user.getId());
+        Borrower borrower = savedUser.getBorrower();
         borrower.setLoanAmount(loanAmount);
         borrower.setPropertyValue(propertyValue);
         borrower.setLoanType(loanType);
@@ -59,10 +60,6 @@ public class RateServiceImpl  implements RateService {
         borrower.setCreditScore(credit);
         borrower.setLoanTerm(loanTerm);
         borrower.setLoanPurpose(loanPurpose);
-
-        User updateUser = new User(user);
-        userRepository.saveAndFlush( updateUser);
-
         //if all fields are valid, then do the math
         double ltv = loanAmount/propertyValue * 100;
         String ltvRange = "";
