@@ -6,7 +6,6 @@ import com.mandy.capstone.repositories.UserRepository;
 import com.mandy.capstone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +58,7 @@ public class StaffController {
             userDto.setBorrowerDto(savedUser.getBorrowerDto());
         }
 ////password doesn't show up or pass in request so if password = null, meaning it is unchanged
-        if(userDto.getPassword()=="" ||userDto.getPassword()==null){
+        if("".equals(userDto.getPassword().trim())){
             userDto.setPassword(savedUser.getPassword());
         }else{
             String passHash = passwordEncoder.encode(userDto.getPassword());

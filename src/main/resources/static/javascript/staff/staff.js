@@ -399,6 +399,6 @@ const logOut = async() =>{
         headers: headers
     })
         .catch(err => console.error(err))
-        .then(window.location.reload())
+        .then(window.location.replace("login"))
 }
 logOutBtn.addEventListener("click", logOut)

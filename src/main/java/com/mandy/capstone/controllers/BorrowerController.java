@@ -41,7 +41,7 @@ public class BorrowerController {
         userDto.getBorrowerDto().setBorrower_id(savedUser.getBorrowerDto().getBorrower_id());
 //password doesn't show up in request so if password = blank, meaning it is unchanged
         //if ("".equals(userDto.getPassword()): check for both empty and null
-        if ("".equals(userDto.getPassword())){
+        if ("".equals(userDto.getPassword().trim())){
             userDto.setPassword(savedUser.getPassword());
         }else{
             String passHash = passwordEncoder.encode(userDto.getPassword());

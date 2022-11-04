@@ -36,7 +36,6 @@ public class AdminController {
     public List<String> addAcount(@RequestBody UserDto newUser, @PathVariable String role){
         String passHash = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(passHash);
-        System.out.println(role);
         return userService.adminAddNewAccount(newUser, role);    }
 
     @GetMapping("admin/alluser")
