@@ -102,6 +102,13 @@ public class ValidationServiceImpl implements ValidationService {
         String occupancy = borrower.getOccupancyType();
         String propertyType = borrower.getPropertyType();
 
+        //the current lender only offer purchase with 5% down or refinance with 95% ltv or below.
+        if( ltv >0.95){
+            response.add("false");
+            response.add("We only offer loans with 5% down payment");
+            response.add("danger");
+            return response;
+        }
         if(loanAmount<0){
             response.add("false");
             response.add("Loan amount cannot be less than or equal 0");

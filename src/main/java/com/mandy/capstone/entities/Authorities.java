@@ -21,7 +21,6 @@ public class Authorities implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long authority_id;
     private String authority;
-
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "user_id")
